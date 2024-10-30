@@ -49,6 +49,8 @@ void OpenGlWidget::initializeGL()
         initializeOpenGLFunctions();
         glEnable(GL_DEPTH_TEST);
 
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
         // Load shader program
         bool shaderLoaded = false;
 
