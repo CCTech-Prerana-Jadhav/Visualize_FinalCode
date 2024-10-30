@@ -26,12 +26,10 @@ int Point::Z()
 
 bool Point::operator<(const Point& other) const
 {
-	if (mX != other.mX) 
-	{
+	if (mX != other.mX) {
 		return mX < other.mX;
 	}
-	if (mY != other.mY) 
-	{
+	if (mY != other.mY) {
 		return mY < other.mY;
 	}
 	return mZ < other.mZ;

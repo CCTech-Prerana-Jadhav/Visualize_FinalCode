@@ -64,6 +64,7 @@ std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point 
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
     double z = triangulation.UniqueNumbers[point.Z()];
+
     return "vn " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
