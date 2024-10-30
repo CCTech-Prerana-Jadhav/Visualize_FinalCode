@@ -79,7 +79,6 @@ void Visualizer::onTranslateClick()
         "/home",
         QFileDialog::ShowDirsOnly
         | QFileDialog::DontResolveSymlinks);
-
     
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
