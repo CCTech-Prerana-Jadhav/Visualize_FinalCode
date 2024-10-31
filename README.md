@@ -1,4 +1,5 @@
 To Do list,
 
-- [ ] Make changes
+- [ ] Make changes in code
 - [ ] Modify the UI
+      
