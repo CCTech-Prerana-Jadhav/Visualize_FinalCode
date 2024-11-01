@@ -18,7 +18,8 @@ void DataWriter::Write(const std::string& filename, const Triangulation& triangu
     }
 }
 
-std::string DataWriter::fomulateText(Triangulation triangulation, Point point)
+// using const references of parameters to avoid copying
+std::string DataWriter::fomulateText(const Triangulation& triangulation, const Point& point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
