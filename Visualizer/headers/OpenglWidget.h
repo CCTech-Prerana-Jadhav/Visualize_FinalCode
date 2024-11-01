@@ -7,8 +7,6 @@
 #include <QMatrix4x4>
 #include <QVector3D>
 #include <QMouseEvent>
-#include <vector>
-
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
@@ -42,7 +40,6 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
-    //void loadSTL(const QString& filePath);
     void updateModelViewMatrix();
 
     QOpenGLShaderProgram shaderProgram;
