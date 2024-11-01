@@ -27,7 +27,6 @@ private:
 
 private:
     Triangulation triangulation;
-    Triangulation outputTriangulation;
 
     QPushButton* loadFile;
     QPushButton* translate;
