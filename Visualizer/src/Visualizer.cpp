@@ -89,9 +89,9 @@ void Visualizer::onTranslateClick()
 
         // reload file to check and load in output renderer
         OBJReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
+        reader.read(exportFileName.toStdString(), triangulation);
 
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetOutput->setData(data);
 
     }
@@ -105,7 +105,7 @@ void Visualizer::onTranslateClick()
         STLReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
 
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetOutput->setData(data);
     }
 
@@ -120,14 +120,14 @@ void Visualizer::onExportClick()
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.obj)"));
         ObjWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
+        writer.Write(fileName.toStdString(), triangulation);
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.stl)"));
         STLWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
+        writer.Write(fileName.toStdString(), triangulation);
     }
 }
 
