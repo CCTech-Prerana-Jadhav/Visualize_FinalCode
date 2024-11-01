@@ -8,5 +8,6 @@ public:
     void Write(const std::string& filename, const Triangulation& triangulation);
 
 private:
-    std::string fomulateText(Triangulation triangulation, Point point);
+    // Using const references of Triangulation and Point classes
+    std::string fomulateText(const Triangulation& triangulation, const Point& point);
 };
