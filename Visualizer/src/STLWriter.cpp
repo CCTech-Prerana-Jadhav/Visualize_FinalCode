@@ -4,7 +4,7 @@
 
 using namespace std;
 
-std::string STLWriter::formulateText(Triangulation triangulation, Point point)
+std::string STLWriter::formulateText(const Triangulation& triangulation, const Point& point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
