@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-
+#include <QMessageBox>
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
@@ -26,7 +26,7 @@ private:
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation);
 
 private:
-    Triangulation triangulation;
+    Triangulation triangulation;  // Single triangulation data structure used for data transfer
 
     QPushButton* loadFile;
     QPushButton* translate;
@@ -39,9 +39,7 @@ private:
 
     QVector<GLfloat> vertices;
 
-
-
-    // translation data
     QString inputFilePath;
+    QMessageBox msgBox;
 
 };
