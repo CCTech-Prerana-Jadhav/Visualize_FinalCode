@@ -103,7 +103,7 @@ void Visualizer::onTranslateClick()
 
         // reload file to check and load in output renderer
         STLReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
+        reader.read(exportFileName.toStdString(), triangulation);
 
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetOutput->setData(data);
@@ -131,25 +131,25 @@ void Visualizer::onExportClick()
     }
 }
 
-OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
+OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& triangulation)
 {
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+    for each (Triangle triangle in triangulation.Triangles)
     {
         for each (Point point in triangle.Points())
         {
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(triangulation.UniqueNumbers[point.Z()]);
         }
 
         Point normal = triangle.Normal();
 
         for (size_t i = 0; i < 3; i++)
         {
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
         }
     }
 
