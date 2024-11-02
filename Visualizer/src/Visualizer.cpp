@@ -81,34 +81,36 @@ void Visualizer::onTranslateClick()
         | QFileDialog::DontResolveSymlinks);
 
     
-    if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+    // Check if directory is selected
+    if (!dir.isEmpty())
     {
-        QString exportFileName = dir + "/output.obj";
-        ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
-
-        // reload file to check and load in output renderer
-        OBJReader reader;
-        reader.read(exportFileName.toStdString(), triangulation);
-
+        QString exportFileName;
+    
+        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+        {
+            exportFileName = QDir(dir).filePath("output.obj");
+            ObjWriter writer;
+            writer.Write(exportFileName.toStdString(), triangulation);
+    
+            // reload file to check and load in output renderer
+            OBJReader reader;
+            reader.read(exportFileName.toStdString(), triangulation);
+        }
+    
+        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+        {
+            exportFileName = QDir(dir).filePath("output.stl");
+            STLWriter writer;
+            writer.Write(exportFileName.toStdString(), triangulation);
+    
+            // reload file to check and load in output renderer
+            STLReader reader;
+            reader.read(exportFileName.toStdString(), triangulation);
+        }
+    
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetOutput->setData(data);
-
     }
-    else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-    {
-        QString exportFileName = dir + "/output.stl";
-        STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
-
-        // reload file to check and load in output renderer
-        STLReader reader;
-        reader.read(exportFileName.toStdString(), triangulation);
-
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        openglWidgetOutput->setData(data);
-    }
-
 }
 
 void Visualizer::onExportClick()
