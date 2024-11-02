@@ -30,6 +30,7 @@ void Visualizer::setupUi()
     exportFile= new QPushButton("Export", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
+
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QGridLayout* layout = new QGridLayout(this);
@@ -67,69 +68,94 @@ void  Visualizer::onLoadFileClick()
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
     }
+    else
+    {
+        msgBox.setText("No file was selected");
+        msgBox.exec();
+    }
 }
 
 void Visualizer::onTranslateClick()
 {
-    QFileDialog dialog(this);
-
-    dialog.setFileMode(QFileDialog::Directory);
-
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-        "/home",
-        QFileDialog::ShowDirsOnly
-        | QFileDialog::DontResolveSymlinks);
-
-    
-    // Check if directory is selected
-    if (!dir.isEmpty())
+    if (!inputFilePath.isEmpty())
     {
-        QString exportFileName;
-    
-        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+        QFileDialog dialog(this);
+
+        dialog.setFileMode(QFileDialog::Directory);
+
+        QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+            "/home",
+            QFileDialog::ShowDirsOnly
+            | QFileDialog::DontResolveSymlinks);
+
+        // Check if directory is selected
+        if (!dir.isEmpty())
         {
-            exportFileName = QDir(dir).filePath("output.obj");
-            ObjWriter writer;
-            writer.Write(exportFileName.toStdString(), triangulation);
-    
-            // reload file to check and load in output renderer
-            OBJReader reader;
-            reader.read(exportFileName.toStdString(), triangulation);
+            QString exportFileName;
+
+            if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+            {
+                exportFileName = QDir(dir).filePath("output.obj");
+                ObjWriter writer;
+                writer.Write(exportFileName.toStdString(), triangulation);
+
+                // reload file to check and load in output renderer
+                OBJReader reader;
+                reader.read(exportFileName.toStdString(), triangulation);
+            }
+
+            else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+            {
+                exportFileName = QDir(dir).filePath("output.stl");
+                STLWriter writer;
+                writer.Write(exportFileName.toStdString(), triangulation);
+
+                // reload file to check and load in output renderer
+                STLReader reader;
+                reader.read(exportFileName.toStdString(), triangulation);
+            }
+
+            OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
+            openglWidgetOutput->setData(data);
         }
-    
-        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+        else
         {
-            exportFileName = QDir(dir).filePath("output.stl");
-            STLWriter writer;
-            writer.Write(exportFileName.toStdString(), triangulation);
-    
-            // reload file to check and load in output renderer
-            STLReader reader;
-            reader.read(exportFileName.toStdString(), triangulation);
+            msgBox.setText("No directory was selected!");
+            msgBox.exec();
         }
-    
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        openglWidgetOutput->setData(data);
+    }
+    else
+    {
+        msgBox.setText("Input file was not loaded!");
+        msgBox.exec();
     }
 }
 
 void Visualizer::onExportClick()
 {
-    QFileDialog dialog(this);
+    if (!inputFilePath.isEmpty())
+    {
+        QFileDialog dialog(this);
 
-    if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
-    {
-        QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save File"), "", tr("files (*.obj)"));
-        ObjWriter writer;
-        writer.Write(fileName.toStdString(), triangulation);
+        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+        {
+            QString fileName = QFileDialog::getSaveFileName(this,
+                tr("Save File"), "", tr("files (*.obj)"));
+            ObjWriter writer;
+            writer.Write(fileName.toStdString(), triangulation);
+        }
+        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+        {
+            QString fileName = QFileDialog::getSaveFileName(this,
+                tr("Save File"), "", tr("files (*.stl)"));
+            STLWriter writer;
+            writer.Write(fileName.toStdString(), triangulation);
+        }
     }
-    else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+    else
     {
-        QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save File"), "", tr("files (*.stl)"));
-        STLWriter writer;
-        writer.Write(fileName.toStdString(), triangulation);
+        msgBox.setText("Input file was not loaded!");
+        msgBox.exec();
     }
 }
 
@@ -154,6 +180,5 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(triangulation.UniqueNumbers[normal.Z()]);
         }
     }
-
     return data;
 }
