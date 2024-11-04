@@ -5,7 +5,6 @@
 #include<sstream>
 #include<vector>
 #include<map>
-#include<unordered_map>
 
 #define TOLERANCE 0.0000001
 
@@ -25,10 +24,8 @@ bool STLReader::operator()(double a, double b) const
 void STLReader::read(const std::string& fileName, Triangulation& triangulation)
 {
     std::map<double, int, STLReader> uniqueValueMap;
-    //std::map<Point, int> uniqueVertexMap;
-    //std::map<Point, int> uniqueNormalMap;
-    double xyz[3]; // To store 3 coordinates as double
-    std::vector<int> pointIndices; // To store indices of unique double values
+    double xyz[3];
+    std::vector<int> pointIndices; 
 
     std::ifstream infile(fileName);
     if (infile.is_open())
