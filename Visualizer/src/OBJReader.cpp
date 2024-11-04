@@ -10,6 +10,7 @@
 #include <sstream>
 #include <cassert>
 #include <string>
+#include <QDebug>
 #include <map>
 
 #define TOLERANCE 0.0000001
@@ -26,6 +27,9 @@ bool OBJReader::operator()(double a, double b) const
 }
 void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
 {
+    triangulation.Triangles.clear();
+    triangulation.UniqueNumbers.clear();
+
     std::map<double, int, OBJReader> uniqueMap;
     double xyz[3];
     double normalXYZ[3];
@@ -94,7 +98,6 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
                         triangulation.UniqueNumbers.push_back(normalXYZ[i]);
                         uniqueMap[normalXYZ[i]] = triangulation.UniqueNumbers.size() - 1;
                         pt[i] = triangulation.UniqueNumbers.size() - 1;
-
                     }
                     else
                     {
@@ -117,8 +120,9 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
 
-                for (int i = 0; i < splitList.size(); i++)
-                    Point v1 = vertices[firstVertexId];
+                qInfo() << firstVertexId << " " << secondVertexId << " " << thirdVertexId + "\n";
+
+                Point v1 = vertices[firstVertexId];
                 Point v2 = vertices[secondVertexId];
                 Point v3 = vertices[thirdVertexId];
                 triangulation.Triangles.push_back(Triangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));

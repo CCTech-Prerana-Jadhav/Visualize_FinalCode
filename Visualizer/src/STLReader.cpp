@@ -29,6 +29,8 @@ void STLReader::read(const std::string& fileName, Triangulation& triangulation)
     //std::map<Point, int> uniqueNormalMap;
     double xyz[3]; // To store 3 coordinates as double
     std::vector<int> pointIndices; // To store indices of unique double values
+    triangulation.Triangles.clear();
+    triangulation.UniqueNumbers.clear();
 
     std::ifstream infile(fileName);
     if (infile.is_open())

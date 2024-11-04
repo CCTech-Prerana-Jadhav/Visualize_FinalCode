@@ -6,6 +6,7 @@
 #include "OBJWriter.h"
 #include "STLWriter.h"
 #include "DataWriter.h"
+#include <QDebug>
 
 
 Visualizer::Visualizer(QWidget* parent)
@@ -47,6 +48,39 @@ void Visualizer::setupUi()
     centralWidget->setLayout(layout);
 }
 
+void Visualizer::readFile(const QString& inFileName)
+{
+    if (inFileName.endsWith(".stl", Qt::CaseInsensitive))
+    {
+        STLReader reader;
+        reader.read(inFileName.toStdString(), triangulation);
+    }
+    else if (inFileName.endsWith(".obj", Qt::CaseInsensitive))
+    {
+        OBJReader reader;
+        reader.read(inFileName.toStdString(), triangulation);
+    }
+}
+
+void Visualizer::writeFile()
+{
+    if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+    {
+        QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save File"), "", tr("files (*.obj)"));
+        qInfo() << fileName << endl;
+        ObjWriter writer;
+        writer.Write(fileName.toStdString(), triangulation);
+    }
+    else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
+    {
+        QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save File"), "", tr("files (*.stl)"));
+        STLWriter writer;
+        writer.Write(fileName.toStdString(), triangulation);
+    }
+}
+
 void  Visualizer::onLoadFileClick()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -55,16 +89,7 @@ void  Visualizer::onLoadFileClick()
     if (!fileName.isEmpty())
     {
         inputFilePath = fileName;
-        if(inputFilePath.endsWith(".stl",Qt::CaseInsensitive))
-        {
-            STLReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
-        }
-        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-        {
-            OBJReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
-        }
+        readFile(inputFilePath);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
     }
@@ -95,7 +120,7 @@ void Visualizer::onTranslateClick()
 
             if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
             {
-                exportFileName = QDir(dir).filePath("output.obj");
+                exportFileName = QDir(dir).filePath("temp.obj");
                 ObjWriter writer;
                 writer.Write(exportFileName.toStdString(), triangulation);
 
@@ -106,7 +131,7 @@ void Visualizer::onTranslateClick()
 
             else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
             {
-                exportFileName = QDir(dir).filePath("output.stl");
+                exportFileName = QDir(dir).filePath("temp.stl");
                 STLWriter writer;
                 writer.Write(exportFileName.toStdString(), triangulation);
 
@@ -136,21 +161,7 @@ void Visualizer::onExportClick()
     if (!inputFilePath.isEmpty())
     {
         QFileDialog dialog(this);
-
-        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
-        {
-            QString fileName = QFileDialog::getSaveFileName(this,
-                tr("Save File"), "", tr("files (*.obj)"));
-            ObjWriter writer;
-            writer.Write(fileName.toStdString(), triangulation);
-        }
-        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-        {
-            QString fileName = QFileDialog::getSaveFileName(this,
-                tr("Save File"), "", tr("files (*.stl)"));
-            STLWriter writer;
-            writer.Write(fileName.toStdString(), triangulation);
-        }
+        writeFile();
     }
     else
     {

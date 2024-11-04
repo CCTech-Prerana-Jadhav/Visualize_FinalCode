@@ -21,6 +21,9 @@ private slots:
     void onTranslateClick();
     void onExportClick();
 
+    void readFile(const QString&);
+    void writeFile();
+
 private:
     void setupUi();
     OpenGlWidget::Data convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation);
