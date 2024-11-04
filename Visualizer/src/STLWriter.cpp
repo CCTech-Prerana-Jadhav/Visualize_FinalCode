@@ -2,8 +2,6 @@
 #include<fstream>
 #include<iomanip>
 
-using namespace std;
-
 std::string STLWriter::formulateText(Triangulation triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
@@ -19,7 +17,7 @@ void STLWriter::Write(const std::string& filename, const Triangulation& triangul
 
     if (outfile.is_open())
     {
-        outfile << "solid cube - ascii" << endl;
+        outfile << "solid model" << std::endl;
         for (Triangle tri : triangulation.Triangles)
         {
             outfile << std::fixed << std::setprecision(6)
