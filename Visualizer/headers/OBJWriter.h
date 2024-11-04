@@ -12,7 +12,7 @@ public:
 
 private:
     void findAndAddPoint(Point point, std::vector<Point>& pointList, std::map<Point, int>& uniqueValueMap);
-    std::string formulateVertex(Triangulation triangulation, Point point);
-    std::string formulateVertexNormal(Triangulation triangulation, Point point);
+    std::string formulateVertex(const Triangulation& triangulation, Point point);
+    std::string formulateVertexNormal(const Triangulation& triangulation, Point point);
     std::string formulateFace(Triangle triangle);
 };

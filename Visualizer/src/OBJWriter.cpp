@@ -50,7 +50,7 @@ void ObjWriter::findAndAddPoint(Point point, std::vector<Point>& pointList, std:
     }
 }
 
-std::string ObjWriter::formulateVertex(Triangulation triangulation, Point point)
+std::string ObjWriter::formulateVertex(const Triangulation& triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
@@ -59,7 +59,7 @@ std::string ObjWriter::formulateVertex(Triangulation triangulation, Point point)
     return "v " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
-std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point point)
+std::string ObjWriter::formulateVertexNormal(const Triangulation& triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
