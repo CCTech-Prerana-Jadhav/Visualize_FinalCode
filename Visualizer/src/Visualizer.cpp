@@ -47,7 +47,7 @@ void Visualizer::onLoadFileClick()
     {
         inputFilePath = fileName;
         triangulation = readFile(inputFilePath);
-        OpenGlWidget::Data data = convertTriangulationToGraphicsObject(triangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
     }
 }
@@ -61,7 +61,7 @@ void Visualizer::onTranslateClick()
         writeFile(exportFileName, triangulation);
 
         outputTriangulation = readFile(exportFileName);
-        OpenGlWidget::Data data = convertTriangulationToGraphicsObject(outputTriangulation);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
     }
 }
@@ -100,17 +100,17 @@ void Visualizer::writeFile(const QString& filePath, const Triangulation& tri)
     }
     else if (filePath.endsWith(".obj", Qt::CaseInsensitive))
     {
-        OBJWriter writer;
+        ObjWriter writer;
         writer.Write(filePath.toStdString(), tri);
     }
 }
 
-OpenGlWidget::Data Visualizer::convertTriangulationToGraphicsObject(const Triangulation& inTriangulation)
+OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
-    for (const Triangle& triangle : inTriangulation.Triangles)
+    for each (Triangle triangle in inTriangulation.Triangles)
     {
-        for (const Point& point : triangle.Points())
+        for each (Point point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
