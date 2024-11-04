@@ -1,6 +1,6 @@
 #pragma once
 #include "Triangle.h"
-#include<vector>
+#include <vector>
 
 class Triangulation
 {

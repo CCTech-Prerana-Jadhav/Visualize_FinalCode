@@ -86,7 +86,6 @@ void Visualizer::onTranslateClick()
         QString exportFileName = dir + "/output.obj";
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
-
         // reload file to check and load in output renderer
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);

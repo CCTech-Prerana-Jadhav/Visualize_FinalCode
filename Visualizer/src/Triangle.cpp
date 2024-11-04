@@ -26,6 +26,11 @@ Point Triangle::P3()
     return p3;
 }
 
+Point Triangle::Normal()
+{
+    return normal;
+}
+
 std::vector<Point> Triangle::Points()
 {
     std::vector<Point> points;
@@ -34,10 +39,3 @@ std::vector<Point> Triangle::Points()
     points.push_back(p3);
     return points;
 }
-
-Point Triangle::Normal()
-{
-    return normal;
-}
-
-

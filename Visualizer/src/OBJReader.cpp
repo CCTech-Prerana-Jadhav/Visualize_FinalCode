@@ -116,9 +116,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
                 int firstVertexId = splitList.value(0).toInt() - 1;
                 int secondVertexId = splitList.value(3).toInt() - 1;
                 int thirdVertexId = splitList.value(6).toInt() - 1;
-
-                for (int i = 0; i < splitList.size(); i++)
-                    Point v1 = vertices[firstVertexId];
+                Point v1 = vertices[firstVertexId];
                 Point v2 = vertices[secondVertexId];
                 Point v3 = vertices[thirdVertexId];
                 triangulation.Triangles.push_back(Triangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));

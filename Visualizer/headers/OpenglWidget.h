@@ -10,7 +10,8 @@
 #include <vector>
 
 
-class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
+class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions 
+{
     Q_OBJECT
 
 public:
@@ -18,7 +19,7 @@ public:
         {
             QVector<GLfloat> vertices;
             QVector<GLfloat> normals;
-    };
+        };
 
 public:
     explicit OpenGlWidget(QWidget* parent = nullptr);

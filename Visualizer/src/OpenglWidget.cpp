@@ -10,7 +10,8 @@ OpenGlWidget::OpenGlWidget(QWidget* parent)
 {
 }
 
-OpenGlWidget::~OpenGlWidget() {
+OpenGlWidget::~OpenGlWidget() 
+{
     makeCurrent();
     vbo.destroy();
     doneCurrent();
@@ -85,7 +86,8 @@ void OpenGlWidget::initializeGL()
     }
 }
 
-void OpenGlWidget::resizeGL(int w, int h) {
+void OpenGlWidget::resizeGL(int w, int h)
+{
     if (isInitialized == true)
     {
         glViewport(0, 0, w, h);
@@ -117,7 +119,8 @@ void OpenGlWidget::paintGL()
     }
 }
 
-void OpenGlWidget::updateModelViewMatrix() {
+void OpenGlWidget::updateModelViewMatrix() 
+{
     modelView.setToIdentity();
     modelView.translate(panOffset.x(), panOffset.y(), -5.0f);
     modelView.scale(zoomLevel);
@@ -126,7 +129,8 @@ void OpenGlWidget::updateModelViewMatrix() {
     modelView.rotate(rotation.z(), 0.0f, 0.0f, 1.0f);
 }
 
-void OpenGlWidget::wheelEvent(QWheelEvent* event) {
+void OpenGlWidget::wheelEvent(QWheelEvent* event) 
+{
     // Zoom in or out
     if (event->angleDelta().y() > 0)
         zoomLevel *= 1.1f;  // Zoom in
@@ -138,11 +142,13 @@ void OpenGlWidget::wheelEvent(QWheelEvent* event) {
 
 }
 
-void OpenGlWidget::mousePressEvent(QMouseEvent* event) {
+void OpenGlWidget::mousePressEvent(QMouseEvent* event) 
+{
     lastMousePosition = event->pos();
 }
 
-void OpenGlWidget::mouseMoveEvent(QMouseEvent* event) {
+void OpenGlWidget::mouseMoveEvent(QMouseEvent* event) 
+{
     QPoint delta = event->pos() - lastMousePosition;
     lastMousePosition = event->pos();
 
@@ -151,7 +157,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent* event) {
         rotation.setX(rotation.x() + delta.y() * 0.5f);
         rotation.setY(rotation.y() + delta.x() * 0.5f);
     }
-    else if (event->buttons() & Qt::RightButton) {
+    else if (event->buttons() & Qt::RightButton)
+    {
         // Pan model
         panOffset.setX(panOffset.x() + delta.x() * 0.01f);
         panOffset.setY(panOffset.y() - delta.y() * 0.01f);
