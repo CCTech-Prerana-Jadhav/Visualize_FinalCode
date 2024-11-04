@@ -7,7 +7,6 @@
 #include "STLWriter.h"
 #include "DataWriter.h"
 
-
 Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -20,50 +19,37 @@ Visualizer::Visualizer(QWidget* parent)
 
 Visualizer::~Visualizer()
 {
-
 }
 
 void Visualizer::setupUi()
 {
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
-    exportFile= new QPushButton("Export", this);
+    exportFile = new QPushButton("Export", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QGridLayout* layout = new QGridLayout(this);
-
     layout->addWidget(loadFile, 0, 0);
     layout->addWidget(translate, 0, 1);
     layout->addWidget(openglWidgetInput, 1, 0);
     layout->addWidget(openglWidgetOutput, 1, 1, 1, 2);
     layout->addWidget(exportFile, 0, 2);
 
-
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
 }
 
-void  Visualizer::onLoadFileClick()
+void Visualizer::onLoadFileClick()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open File"), "", tr("files (*.stl *.obj)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files (*.stl *.obj)"));
 
     if (!fileName.isEmpty())
     {
         inputFilePath = fileName;
-        if(inputFilePath.endsWith(".stl",Qt::CaseInsensitive))
-        {
-            STLReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
-        }
-        else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-        {
-            OBJReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
-        }
+        triangulation = readFile(inputFilePath);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
     }
@@ -71,87 +57,83 @@ void  Visualizer::onLoadFileClick()
 
 void Visualizer::onTranslateClick()
 {
-    QFileDialog dialog(this);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    dialog.setFileMode(QFileDialog::Directory);
+    if (dir.isEmpty()) return;
 
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-        "/home",
-        QFileDialog::ShowDirsOnly
-        | QFileDialog::DontResolveSymlinks);
+    QString exportFileName;
 
-    
-    if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
-    {
-        QString exportFileName = dir + "/output.obj";
-        ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+    exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
+    writeFile(exportFileName, triangulation);
+    outputTriangulation = readFile(exportFileName);
 
-        // reload file to check and load in output renderer
-        OBJReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
+    OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+    openglWidgetOutput->setData(data);
 
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
-        openglWidgetOutput->setData(data);
-
-    }
-    else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-    {
-        QString exportFileName = dir + "/output.stl";
-        STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
-
-        // reload file to check and load in output renderer
-        STLReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
-
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
-        openglWidgetOutput->setData(data);
-    }
-
+    // Clean up temporary file
+    QFile::remove(exportFileName);
 }
 
 void Visualizer::onExportClick()
 {
-    QFileDialog dialog(this);
-
-    if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? tr("files (*.obj)") : tr("files (*.stl)"));
+    if (!fileName.isEmpty())
     {
-        QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save File"), "", tr("files (*.obj)"));
-        ObjWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
-    }
-    else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
-    {
-        QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save File"), "", tr("files (*.stl)"));
-        STLWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
+        writeFile(fileName, outputTriangulation);
     }
 }
 
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+        for each (Triangle triangle in inTriangulation.Triangles)
+        {
+            for each (Point point in triangle.Points())
+            {
+                data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
+                data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
+                data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
+            }
+    
+            Point normal = triangle.Normal();
+    
+            for (size_t i = 0; i < 3; i++)
+            {
+                data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
+                data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
+                data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
+            }
+        }
+    
+        return data;
+}
+
+Triangulation Visualizer::readFile(const QString &filePath)
+{
+    Triangulation triangulation;
+    if (filePath.endsWith(".stl", Qt::CaseInsensitive)) 
     {
-        for each (Point point in triangle.Points())
-        {
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
-            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
-        }
-
-        Point normal = triangle.Normal();
-
-        for (size_t i = 0; i < 3; i++)
-        {
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
-            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
-        }
+        STLReader reader;
+        reader.read(filePath.toStdString(), triangulation);
+    }else if (filePath.endsWith(".obj", Qt::CaseInsensitive)) 
+    {
+        OBJReader reader;
+        reader.read(filePath.toStdString(), triangulation);
     }
 
-    return data;
+    return triangulation;
+}
+
+void Visualizer::writeFile(const QString &filePath, const Triangulation& triangulation)
+{
+    if (filePath.endsWith(".stl", Qt::CaseInsensitive))
+    {
+        STLWriter writer;
+        writer.Write(filePath.toStdString(), triangulation);
+    }
+    else if (filePath.endsWith(".obj", Qt::CaseInsensitive))
+    {
+        OBJWriter writer;
+        writer.Write(filePath.toStdString(), triangulation);
+    }
 }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-class ObjWriter : public Writer
+class OBJWriter : public Writer
 {
 public:
     void Write(const std::string& filename, const Triangulation& triangulation);

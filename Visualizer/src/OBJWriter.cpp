@@ -9,7 +9,7 @@ std::vector<Point> uniqueNormalsList;
 std::map<Point, int> VerticeMap;
 std::map<Point, int> NormalMap;
 
-void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation)
+void OBJWriter::Write(const std::string& filename, const Triangulation& triangulation)
 {
     std::ofstream outfile(filename);
     for (auto triangle : triangulation.Triangles)
@@ -40,7 +40,7 @@ void ObjWriter::Write(const std::string& filename, const Triangulation& triangul
 }
 
 
-void ObjWriter::findAndAddPoint(Point point, std::vector<Point>& pointList, std::map<Point, int>& uniqueValueMap)
+void OBJWriter::findAndAddPoint(Point point, std::vector<Point>& pointList, std::map<Point, int>& uniqueValueMap)
 {
     auto pair = uniqueValueMap.find(point);
     if (pair == uniqueValueMap.end())
@@ -50,7 +50,7 @@ void ObjWriter::findAndAddPoint(Point point, std::vector<Point>& pointList, std:
     }
 }
 
-std::string ObjWriter::formulateVertex(Triangulation triangulation, Point point)
+std::string OBJWriter::formulateVertex(Triangulation triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
@@ -59,7 +59,7 @@ std::string ObjWriter::formulateVertex(Triangulation triangulation, Point point)
     return "v " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
-std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point point)
+std::string OBJWriter::formulateVertexNormal(Triangulation triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];
     double y = triangulation.UniqueNumbers[point.Y()];
@@ -68,7 +68,7 @@ std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point 
     return "vn " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
-std::string ObjWriter::formulateFace(Triangle triangle)
+std::string OBJWriter::formulateFace(Triangle triangle)
 {
     // v vt vn
     std::string new1 = std::to_string(VerticeMap[triangle.P1()] + 1) + "//" + std::to_string(NormalMap[triangle.Normal()] + 1)
