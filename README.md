@@ -6,3 +6,4 @@ To Do list,
 - [x] Remove redundent code from the visualizer class
 - [x] Delete the tempory file through code
 - [x] Correct stlwriter syntax
+- [x] Fix the bug in OBJWriter
