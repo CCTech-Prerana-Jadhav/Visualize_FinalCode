@@ -11,7 +11,7 @@ Point::~Point()
 
 int Point::X() const
 {
-	return 0;
+	return mX;
 }
 
 
