@@ -12,6 +12,7 @@ Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
 {
     setupUi();
+    //connectUI();
 
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
@@ -45,6 +46,14 @@ void Visualizer::setupUi()
     setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
 }
+/*
+void Visualizer::connectUI()
+{
+    connect(loadFileButton, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
+    connect(translateButton, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
+    connect(exportFileButton, &QPushButton::clicked, this, &Visualizer::onExportClick);
+}
+*/
 
 void  Visualizer::onLoadFileClick()
 {
