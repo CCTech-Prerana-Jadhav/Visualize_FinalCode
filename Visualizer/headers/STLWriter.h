@@ -11,5 +11,5 @@ public:
     void Write(const std::string& filename, const Triangulation& triangulation);
 
 private:
-    std::string formulateText(Triangulation triangulation, Point point);
+    std::string formulateText(const Triangulation& triangulation,Point point);
 };
