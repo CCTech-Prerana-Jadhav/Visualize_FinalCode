@@ -71,7 +71,6 @@ std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point 
 
 std::string ObjWriter::formulateFace(Triangle triangle,std::map<Point, int> VerticeMap, std::map<Point, int> NormalMap)
 {
-    // v vt vn
     std::string new1 = std::to_string(VerticeMap[triangle.P1()] + 1) + "//" + std::to_string(NormalMap[triangle.Normal()] + 1)
         + " " + std::to_string(VerticeMap[triangle.P2()] + 1) + "//" + std::to_string(NormalMap[triangle.Normal()] + 1)
         + " " + std::to_string(VerticeMap[triangle.P3()] + 1) + "//" + std::to_string(NormalMap[triangle.Normal()] + 1);

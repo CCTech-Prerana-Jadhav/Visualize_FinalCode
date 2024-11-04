@@ -40,8 +40,6 @@ private:
 
     QVector<GLfloat> vertices;
 
-
-
     // translation data
     QString inputFilePath;
 
