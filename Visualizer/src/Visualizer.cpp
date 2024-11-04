@@ -57,9 +57,8 @@ void Visualizer::onTranslateClick()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty())
     {
-        QString exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
+        exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
         writeFile(exportFileName, triangulation);
-
         outputTriangulation = readFile(exportFileName);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
@@ -72,6 +71,13 @@ void Visualizer::onExportClick()
     if (!fileName.isEmpty())
     {
         writeFile(fileName, outputTriangulation);
+    }
+
+    QFile file(fileName);
+    QFile tempFile(exportFileName);
+    if (file.exists())
+    {
+        tempFile.remove();
     }
 }
 
