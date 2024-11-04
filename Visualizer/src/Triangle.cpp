@@ -11,17 +11,17 @@ Triangle::~Triangle()
 
 }
 
-Point Triangle::P1()
+Point Triangle::P1() const
 {
     return p1;
 }
 
-Point Triangle::P2()
+Point Triangle::P2() const
 {
     return p2;
 }
 
-Point Triangle::P3()
+Point Triangle::P3() const
 {
     return p3;
 }
@@ -35,7 +35,7 @@ std::vector<Point> Triangle::Points()
     return points;
 }
 
-Point Triangle::Normal()
+Point Triangle::Normal() const
 {
     return normal;
 }

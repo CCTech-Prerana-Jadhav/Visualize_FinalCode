@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "point.h"
+#include "Point.h"
 
 class Triangle
 {
-    // Three points representing the vertices of the triangle
+    // Three points representing the vertices of the triangle and one normal
 private:
     Point p1;
     Point p2;
@@ -16,10 +16,10 @@ public:
     ~Triangle();
 
     // Getter functions to access the private members 
-    Point P1();
-    Point P2();
-    Point P3();
-    Point Normal();
+    Point P1() const;
+    Point P2() const;
+    Point P3() const;
+    Point Normal() const;
 
     std::vector<Point> Points();
 };
