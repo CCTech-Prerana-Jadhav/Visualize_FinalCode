@@ -25,8 +25,6 @@ bool STLReader::operator()(double a, double b) const
 void STLReader::read(const std::string& fileName, Triangulation& triangulation)
 {
     std::map<double, int, STLReader> uniqueValueMap;
-    //std::map<Point, int> uniqueVertexMap;
-    //std::map<Point, int> uniqueNormalMap;
     double xyz[3]; // To store 3 coordinates as double
     std::vector<int> pointIndices; // To store indices of unique double values
 

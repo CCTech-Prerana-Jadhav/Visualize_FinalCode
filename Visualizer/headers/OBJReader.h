@@ -2,6 +2,7 @@
 
 #include <string> 
 #include "Triangulation.h"
+#include <vector>
 #include "Reader.h"
 
 class OBJReader : public Reader
@@ -11,5 +12,6 @@ public:
 	~OBJReader();
 
 	void read(const std::string& fileName, Triangulation& tri);
+	void helper(double xyz[3],std::vector<Point>&, std::map<double, int, OBJReader>&, Triangulation& triangulation);
 	bool operator()(double a, double b) const;
 };

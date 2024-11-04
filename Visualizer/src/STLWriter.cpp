@@ -23,13 +23,13 @@ void STLWriter::Write(const std::string& filename, const Triangulation& triangul
         for (Triangle tri : triangulation.Triangles)
         {
             outfile << std::fixed << std::setprecision(6)
-                << "    facet normal " << formulateText(triangulation, tri.Normal());
-            outfile << "        outer loop\n";
-            outfile << "            vertex " << formulateText(triangulation, tri.P1());
-            outfile << "            vertex " << formulateText(triangulation, tri.P2());
-            outfile << "            vertex " << formulateText(triangulation, tri.P3());
-            outfile << "        endloop\n";
-            outfile << "    endfacet\n";
+                << "    facet normal " << formulateText(triangulation, tri.Normal())
+                << "        outer loop\n"
+                << "            vertex " << formulateText(triangulation, tri.P1())
+                << "            vertex " << formulateText(triangulation, tri.P2())
+                << "            vertex " << formulateText(triangulation, tri.P3())
+                << "        endloop\n"
+                << "    endfacet\n";
         }
         outfile << "endsolid";
     }
