@@ -9,17 +9,18 @@ Point::~Point()
 {
 }
 
-int Point::X()
+int Point::X() const
 {
-	return mX;
+	return 0;
 }
 
-int Point::Y()
+
+int Point::Y() const
 {
 	return mY;
 }
 
-int Point::Z()
+int Point::Z() const
 {
 	return mZ;
 }
