@@ -10,9 +10,9 @@ public:
 	Point(int x, int y, int z);
 	~Point();
 
-	int X();
-	int Y();
-	int Z();
+        int X() const;
+        int Y() const;
+        int Z() const;
 
 	bool operator<(const Point& other) const;
 };
