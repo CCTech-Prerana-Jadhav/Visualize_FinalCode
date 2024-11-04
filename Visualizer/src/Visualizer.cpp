@@ -164,3 +164,28 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
 
     return data;
 }
+
+/*
+auto addCoordinates = [&](const Point& point, std::vector<float>& container) {
+    container.insert(container.end(), {
+        inTriangulation.UniqueNumbers[point.X()],
+        inTriangulation.UniqueNumbers[point.Y()],
+        inTriangulation.UniqueNumbers[point.Z()]
+    });
+};
+
+for (const auto& triangle : inTriangulation.Triangles)
+{
+    for (const auto& point : triangle.Points())
+    {
+        addCoordinates(point, data.vertices);
+    }
+
+    Point normal = triangle.Normal();
+    for (int i = 0; i < 3; ++i)
+    {
+        addCoordinates(normal, data.normals);
+    }
+}
+
+*/
