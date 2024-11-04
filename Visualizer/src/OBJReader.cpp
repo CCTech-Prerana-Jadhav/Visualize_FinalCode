@@ -73,7 +73,6 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
                         pt[i] = pair->second;
 
                     }
-
                 }
                 vertices.push_back(Point(pt[0], pt[1], pt[2]));
             }
