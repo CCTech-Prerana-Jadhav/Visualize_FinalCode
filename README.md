@@ -4,4 +4,4 @@ To Do list,
 - [ ] Modify the UI
 - [x] Make code Readable
 - [x] Remove redundent code from the visualizer class
-- [ ] Delete the tempory file through code
+- [x] Delete the tempory file through code
