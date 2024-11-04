@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-
+#include "STLReader.h"
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"

@@ -134,16 +134,16 @@ void Visualizer::onExportClick()
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+    for each (const Triangle& triangle in inTriangulation.Triangles)
     {
-        for each (Point point in triangle.Points())
+        for each (const Point& point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
         }
 
-        Point normal = triangle.Normal();
+        const Point normal = triangle.Normal();
 
         for (size_t i = 0; i < 3; i++)
         {

@@ -26,7 +26,7 @@ Point Triangle::P3()
     return p3;
 }
 
-std::vector<Point> Triangle::Points()
+std::vector<Point> Triangle::Points() const
 {
     std::vector<Point> points;
     points.push_back(p1);
@@ -35,7 +35,7 @@ std::vector<Point> Triangle::Points()
     return points;
 }
 
-Point Triangle::Normal()
+Point Triangle::Normal() const
 {
     return normal;
 }
