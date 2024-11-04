@@ -7,3 +7,4 @@
 - [x] Delete the tempory file through code
 - [x] Correct stlwriter syntax
 - [x] Fix the bug in OBJWriter
+- [x] Open Application in fullscreen by default
