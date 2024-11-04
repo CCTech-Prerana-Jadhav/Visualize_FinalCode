@@ -1,7 +1,7 @@
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
 
-GraphicsSynchronizer::GraphicsSynchronizer(OpenGlWidget* left, OpenGlWidget* right)
+GraphicsSynchronizer::GraphicsSynchronizer(OpenGlWidget* left, OpenGlWidget* right) //The constructor uses an initialization list correctly, but if left and right are pointers, consider whether they can be nullptr without explicit checks.
     : left(left), right(right)
 {
     connect(left, &OpenGlWidget::viewChange, this, &GraphicsSynchronizer::synchronize);
