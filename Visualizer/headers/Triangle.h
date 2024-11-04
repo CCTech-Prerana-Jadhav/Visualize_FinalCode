@@ -21,5 +21,5 @@ public:
     Point P3() const;
     Point Normal() const;
 
-    std::vector<Point> Points();
+    std::vector<Point> Points() const;
 };
