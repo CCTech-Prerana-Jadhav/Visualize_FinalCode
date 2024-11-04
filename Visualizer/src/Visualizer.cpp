@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QGridLayout>
+#include <QFile>
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
@@ -12,7 +13,6 @@ Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
 {
     setupUi();
-
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
     connect(exportFile, &QPushButton::clicked, this, &Visualizer::onExportClick);
@@ -20,7 +20,11 @@ Visualizer::Visualizer(QWidget* parent)
 
 Visualizer::~Visualizer()
 {
-
+    if (QFile::exists(inputFilePath))
+    {
+        QFile::remove(inputFilePath);
+        qDebug() << "File Deleted";
+    }
 }
 
 void Visualizer::setupUi()
@@ -84,6 +88,7 @@ void Visualizer::onTranslateClick()
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
+        inputFilePath = exportFileName;
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
         // reload file to check and load in output renderer
@@ -92,11 +97,13 @@ void Visualizer::onTranslateClick()
 
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
+        
 
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
+        inputFilePath = exportFileName;
         STLWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 
@@ -154,3 +161,5 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
 
     return data;
 }
+
+    

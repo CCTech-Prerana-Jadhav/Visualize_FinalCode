@@ -40,6 +40,7 @@ private:
 
     QVector<GLfloat> vertices;
 
+    QString tempFileName;
 
 
     // translation data
