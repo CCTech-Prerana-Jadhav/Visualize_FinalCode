@@ -36,13 +36,12 @@ void Visualizer::setupUi()
 
     QGridLayout* layout = new QGridLayout(this);
 
-    layout->addWidget(loadFile, 0, 0);
-    layout->addWidget(translate, 0, 1);
-    layout->addWidget(openglWidgetInput, 1, 0);
-    layout->addWidget(openglWidgetOutput, 1, 1, 1, 2);
-    layout->addWidget(exportFile, 0, 2);
-
-
+    layout->addWidget(loadFile, 0, 0, 1, 2);
+    layout->addWidget(translate, 0, 2, 1, 2);
+    layout->addWidget(exportFile, 0, 4, 1, 2);
+    layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
+    layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
+    
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
