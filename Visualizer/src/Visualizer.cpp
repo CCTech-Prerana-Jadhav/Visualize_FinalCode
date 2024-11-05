@@ -21,7 +21,6 @@ Visualizer::~Visualizer()
 
 void Visualizer::setupUi()
 {
-    // Initialize buttons
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
     exportFile = new QPushButton("Export", this);
@@ -29,7 +28,6 @@ void Visualizer::setupUi()
     openglWidgetOutput = new OpenGlWidget(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
-    // Apply styles to buttons and widgets
     QString buttonStyle = "QPushButton {"
         "    background-color: #4CAF50;"
         "    color: white;"
