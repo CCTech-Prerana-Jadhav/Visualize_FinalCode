@@ -21,6 +21,7 @@ Visualizer::~Visualizer()
 
 void Visualizer::setupUi()
 {
+    // Initialize buttons
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
     exportFile = new QPushButton("Export", this);
@@ -28,19 +29,46 @@ void Visualizer::setupUi()
     openglWidgetOutput = new OpenGlWidget(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
-    QGridLayout* layout = new QGridLayout(this);
+    // Apply styles to buttons and widgets
+    QString buttonStyle = "QPushButton {"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "    border: none;"
+        "    padding: 10px 20px;"
+        "    font-size: 16px;"
+        "    border-radius: 5px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #45a049;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #3e8e41;"
+        "}";
 
+    QString widgetStyle = "QWidget {"
+        "    background-color: #333;"
+        "    color: #f5f5f5;"
+        "}";
+
+    loadFile->setStyleSheet(buttonStyle);
+    translate->setStyleSheet(buttonStyle);
+    exportFile->setStyleSheet(buttonStyle);
+
+    this->setStyleSheet(widgetStyle);
+
+    QGridLayout* layout = new QGridLayout();
     layout->addWidget(loadFile, 0, 0, 1, 2);
     layout->addWidget(translate, 0, 2, 1, 2);
     layout->addWidget(exportFile, 0, 4, 1, 2);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
-
+    layout->setContentsMargins(20, 20, 20, 20);
 
     QWidget* centralWidget = new QWidget(this);
-    setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
 }
+
 
 void Visualizer::onLoadFileClick()
 {
