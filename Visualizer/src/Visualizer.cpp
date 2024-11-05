@@ -36,10 +36,10 @@ void Visualizer::setupUi()
 
     layout->addWidget(loadFile, 0, 0);
     layout->addWidget(translate, 0, 2);
-    layout->addWidget(openglWidgetInput, 1, 0, 1, 2);
+    layout->addWidget(openglWidgetInput, 1, 0);
     layout->addWidget(openglWidgetOutput, 1, 2, 1, 2);
     layout->addWidget(exportFile, 0, 3);
-    layout->addWidget(progressbar, 0, 1);
+    layout->addWidget(progressbar, 2, 0);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -76,12 +76,16 @@ void Visualizer::onTranslateClick()
         QFileDialog::ShowDirsOnly
         | QFileDialog::DontResolveSymlinks);
 
+    progressbar->setValue(0);
+
     
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
+
+        
 
         loadOBJFile(exportFileName, outputTriangulation, openglWidgetOutput);
         QFile::remove(exportFileName);
@@ -116,6 +120,7 @@ void Visualizer::onExportClick()
         STLWriter writer;
         writer.Write(fileName.toStdString(), outputTriangulation);
     }
+    
 }
 
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
