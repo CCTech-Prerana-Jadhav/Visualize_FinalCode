@@ -19,7 +19,7 @@ public:
     Point P1();
     Point P2();
     Point P3();
-    Point Normal();
+    Point Normal() const;
 
-    std::vector<Point> Points();
+    std::vector<Point> Points() const;
 };

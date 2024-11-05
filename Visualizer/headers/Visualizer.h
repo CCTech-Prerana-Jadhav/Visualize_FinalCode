@@ -45,4 +45,6 @@ private:
     // translation data
     QString inputFilePath;
 
+    void loadSTLFile(const QString&, Triangulation& triangulation, OpenGlWidget*);
+    void loadOBJFile(const QString&, Triangulation& triangulation, OpenGlWidget*);
 };

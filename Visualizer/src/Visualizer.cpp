@@ -5,7 +5,6 @@
 #include "OBJReader.h"
 #include "OBJWriter.h"
 #include "STLWriter.h"
-#include "DataWriter.h"
 
 
 Visualizer::Visualizer(QWidget* parent)
@@ -56,16 +55,12 @@ void  Visualizer::onLoadFileClick()
         inputFilePath = fileName;
         if(inputFilePath.endsWith(".stl",Qt::CaseInsensitive))
         {
-            STLReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
+            loadSTLFile(inputFilePath, triangulation, openglWidgetInput);
         }
         else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
         {
-            OBJReader reader;
-            reader.read(inputFilePath.toStdString(), triangulation);
+            loadOBJFile(inputFilePath, triangulation, openglWidgetInput);
         }
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
-        openglWidgetInput->setData(data);
     }
 }
 
@@ -87,13 +82,7 @@ void Visualizer::onTranslateClick()
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 
-        // reload file to check and load in output renderer
-        OBJReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
-
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
-        openglWidgetOutput->setData(data);
-
+        loadOBJFile(exportFileName, outputTriangulation, openglWidgetOutput);
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
@@ -101,12 +90,7 @@ void Visualizer::onTranslateClick()
         STLWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 
-        // reload file to check and load in output renderer
-        STLReader reader;
-        reader.read(exportFileName.toStdString(), outputTriangulation);
-
-        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
-        openglWidgetOutput->setData(data);
+        loadSTLFile(exportFileName, outputTriangulation, openglWidgetOutput);
     }
 
 }
@@ -134,16 +118,16 @@ void Visualizer::onExportClick()
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
-    for each (Triangle triangle in inTriangulation.Triangles)
+    for each (const Triangle& triangle in inTriangulation.Triangles)
     {
-        for each (Point point in triangle.Points())
+        for each (const Point& point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
         }
 
-        Point normal = triangle.Normal();
+        const Point& normal = triangle.Normal();
 
         for (size_t i = 0; i < 3; i++)
         {
@@ -154,4 +138,22 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
     }
 
     return data;
+}
+
+void Visualizer::loadOBJFile(const QString& filepath, Triangulation& triangulation, OpenGlWidget* openglWidgetWindow)
+{
+    OBJReader objreader;
+    objreader.read(filepath.toStdString(), triangulation);
+
+    OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
+    openglWidgetWindow->setData(data);
+}
+
+void Visualizer::loadSTLFile(const QString& filepath, Triangulation& triangulation, OpenGlWidget* openglWidgetWindow)
+{
+    STLReader stlreader;
+    stlreader.read(filepath.toStdString(), triangulation);
+
+    OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
+    openglWidgetWindow->setData(data);
 }
