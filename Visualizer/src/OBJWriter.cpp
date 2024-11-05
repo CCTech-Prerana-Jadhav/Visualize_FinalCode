@@ -11,6 +11,7 @@ void ObjWriter::Write(const std::string& filename, const Triangulation& triangul
     std::map<Point, int> VerticeMap;
     std::map<Point, int> NormalMap;
     std::ofstream outfile(filename);
+
     for (auto triangle : triangulation.Triangles)
     {
         findAndAddPoint(triangle.P1(), uniqueVerticesList, VerticeMap);

@@ -7,6 +7,7 @@
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
+#include <QProgressBar>
 
 class Visualizer : public QMainWindow
 {
@@ -32,6 +33,8 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
+
+    QProgressBar* progressbar;
 
     OpenGlWidget* openglWidgetInput;
     OpenGlWidget* openglWidgetOutput;
