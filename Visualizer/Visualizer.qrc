@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="Visualizer">
+    <qresource prefix="/Visualizer">
+        <file>Resources/icon.png</file>
     </qresource>
 </RCC>
