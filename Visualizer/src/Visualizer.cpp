@@ -51,7 +51,7 @@ void Visualizer::setupUi()
     centralWidget->setLayout(layout);
     customStatusBar->setFixedHeight(30);
 
-    customStatusBar->showMessage("Welcome to VISUALIZER APP ! \n\n\n\n\nLoad your file.");
+    customStatusBar->showMessage("Welcome to VISUALIZER APP ! Load your file.");
 }
 
 void  Visualizer::onLoadFileClick()
