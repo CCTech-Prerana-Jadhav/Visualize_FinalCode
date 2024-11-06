@@ -22,17 +22,17 @@ void ObjWriter::Write(const std::string& filename, const Triangulation& triangul
     if (outfile.is_open())
     {
 
-        for each (Point pt in uniqueVerticesList)
+        for (Point pt : uniqueVerticesList)
         {
             outfile << std::fixed << std::setprecision(6)
                 << formulateVertex(triangulation, pt);
         }
-        for each (Point normals in uniqueNormalsList)
+        for  (Point normals : uniqueNormalsList)
         {
             outfile << std::fixed << std::setprecision(6)
                 << formulateVertexNormal(triangulation, normals);
         }
-        for each (Triangle tri in triangulation.Triangles)
+        for  (Triangle tri : triangulation.Triangles)
         {
             outfile << formulateFace(tri, VerticeMap, NormalMap) << std::endl;
         }

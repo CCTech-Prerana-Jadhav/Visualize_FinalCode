@@ -8,7 +8,7 @@ void DataWriter::Write(const std::string& filename, const Triangulation& triangu
 
     if (outfile.is_open())
     {
-        for each (Triangle tri in triangulation.Triangles)
+        for  (Triangle tri : triangulation.Triangles)
         {
             outfile << std::fixed << std::setprecision(6)
                 << fomulateText(triangulation, tri.P1())
