@@ -8,7 +8,7 @@
 class ObjWriter : public Writer
 {
 public:
-    void Write(const std::string& filename, const Triangulation& triangulation);
+    void Write(const std::string& filename, const Triangulation& triangulation, QProgressBar* );
 
 private:
     void findAndAddPoint(Point point, std::vector<Point>& pointList, std::map<Point, int>& uniqueValueMap);

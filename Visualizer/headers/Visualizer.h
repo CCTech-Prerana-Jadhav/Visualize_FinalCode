@@ -36,6 +36,8 @@ private:
 
     QProgressBar* progressbar;
 
+    QStatusBar* customStatusBar;
+
     OpenGlWidget* openglWidgetInput;
     OpenGlWidget* openglWidgetOutput;
 

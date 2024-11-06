@@ -13,12 +13,14 @@ std::string STLWriter::formulateText(Triangulation triangulation, Point point)
     return std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
-void STLWriter::Write(const std::string& filename, const Triangulation& triangulation)
+void STLWriter::Write(const std::string& filename, const Triangulation& triangulation,QProgressBar* progressbar)
 {
     std::ofstream outfile(filename);
-
+    int count = 1;
+    progressbar->setRange(0, triangulation.Triangles.size());
     if (outfile.is_open())
     {
+        
         outfile << "solid cube - ascii" << endl;
         for (Triangle tri : triangulation.Triangles)
         {
@@ -30,6 +32,8 @@ void STLWriter::Write(const std::string& filename, const Triangulation& triangul
             outfile << "            vertex " << formulateText(triangulation, tri.P3());
             outfile << "        endloop\n";
             outfile << "    endfacet\n";
+            progressbar->setValue(count);
+            count++;
         }
         outfile << "endsolid";
     }
