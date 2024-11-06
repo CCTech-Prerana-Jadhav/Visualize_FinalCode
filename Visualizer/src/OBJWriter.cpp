@@ -4,41 +4,46 @@
 #include <iostream>
 #include "Point.h"
 
-
-void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation)
+void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation, QProgressBar* progressBar)
 {
+    int count = 0;
     std::vector<Point> uniqueVerticesList;
     std::vector<Point> uniqueNormalsList;
     std::map<Point, int> VerticeMap;
     std::map<Point, int> NormalMap;
     std::ofstream outfile(filename);
+
     for (auto triangle : triangulation.Triangles)
     {
         findAndAddPoint(triangle.P1(), uniqueVerticesList, VerticeMap);
         findAndAddPoint(triangle.P2(), uniqueVerticesList, VerticeMap);
         findAndAddPoint(triangle.P3(), uniqueVerticesList, VerticeMap);
         findAndAddPoint(triangle.Normal(), uniqueNormalsList, NormalMap);
+        progressBar->setRange(0, (uniqueVerticesList.size() + uniqueNormalsList.size() + triangulation.Triangles.size()));
     }
     if (outfile.is_open())
     {
 
         for each (Point pt in uniqueVerticesList)
         {
-            outfile << std::fixed << std::setprecision(6)
-                << formulateVertex(triangulation, pt);
+            outfile << std::fixed << std::setprecision(6) << formulateVertex(triangulation, pt);
+            progressBar->setValue(count);
+            count++;
         }
         for each (Point normals in uniqueNormalsList)
         {
-            outfile << std::fixed << std::setprecision(6)
-                << formulateVertexNormal(triangulation, normals);
+            outfile << std::fixed << std::setprecision(6) << formulateVertexNormal(triangulation, normals);
+            progressBar->setValue(count);
+            count++;
         }
         for each (Triangle tri in triangulation.Triangles)
         {
             outfile << formulateFace(tri, VerticeMap, NormalMap) << std::endl;
+            progressBar->setValue(count);
+            count++;
         }
     }
 }
-
 
 void ObjWriter::findAndAddPoint(Point point, std::vector<Point>& pointList, std::map<Point, int>& uniqueValueMap)
 {

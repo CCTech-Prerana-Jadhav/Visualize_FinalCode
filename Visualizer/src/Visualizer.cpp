@@ -7,6 +7,8 @@
 #include "STLWriter.h"
 #include "DataWriter.h"
 
+int count = 0;
+
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
     setupUi();
@@ -26,6 +28,8 @@ void Visualizer::setupUi()
     exportFile = new QPushButton("Export", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
+    progressBar = new QProgressBar(this);
+
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QString buttonStyle = "QPushButton {"
@@ -60,13 +64,13 @@ void Visualizer::setupUi()
     layout->addWidget(exportFile, 0, 4, 1, 2);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
+    layout->addWidget(progressBar, 2, 0, 1, 6);
     layout->setContentsMargins(20, 20, 20, 20);
 
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
 }
-
 
 void Visualizer::onLoadFileClick()
 {
@@ -101,8 +105,8 @@ void Visualizer::onExportClick()
         writeFile(fileName, outputTriangulation);
     }
 
-    QFile file(fileName);
     QFile tempFile(exportFileName);
+    QFile file(fileName);
     if (file.exists())
     {
         tempFile.remove();
@@ -130,12 +134,12 @@ void Visualizer::writeFile(const QString& filePath, const Triangulation& tri)
     if (filePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         STLWriter writer;
-        writer.Write(filePath.toStdString(), tri);
+        writer.Write(filePath.toStdString(), tri, progressBar);
     }
     else if (filePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         ObjWriter writer;
-        writer.Write(filePath.toStdString(), tri);
+        writer.Write(filePath.toStdString(), tri, progressBar);
     }
 }
 
@@ -158,6 +162,9 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
+        progressBar->setValue(count);
+        progressBar->setRange(0, inTriangulation.Triangles.size()-1);
+        count++;
     }
     return data;
 }
