@@ -30,6 +30,7 @@ void Visualizer::setupUi()
     exportFile= new QPushButton("Export", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
+    progressbar = new QProgressBar(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QGridLayout* layout = new QGridLayout(this);
@@ -39,6 +40,7 @@ void Visualizer::setupUi()
     layout->addWidget(exportFile, 0, 4, 1, 2);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
+    layout->addWidget(progressbar, 2,0,1,6);
 
 
     QWidget* centralWidget = new QWidget(this);
@@ -58,11 +60,13 @@ void  Visualizer::onLoadFileClick()
         {
             STLReader reader;
             reader.read(inputFilePath.toStdString(), triangulation);
+            progressbar->setRange(0, triangulation.Triangles.size());
         }
         else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
         {
             OBJReader reader;
             reader.read(inputFilePath.toStdString(), triangulation);
+            progressbar->setRange(0, triangulation.Triangles.size());
         }
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
         openglWidgetInput->setData(data);
@@ -79,7 +83,7 @@ void Visualizer::onTranslateClick()
         "/home",
         QFileDialog::ShowDirsOnly
         | QFileDialog::DontResolveSymlinks);
-
+    progressbar->setValue(0);
     
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
@@ -87,9 +91,10 @@ void Visualizer::onTranslateClick()
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 
-        // reload file to check and load in output renderer
+        // reload file to check and load in output renderer                             
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
+        progressbar->setRange(0, triangulation.Triangles.size());
 
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
@@ -99,11 +104,12 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.stl";
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), triangulation);                                                                                                          
 
         // reload file to check and load in output renderer
         STLReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
+        progressbar->setRange(0, triangulation.Triangles.size());
 
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
@@ -134,6 +140,7 @@ void Visualizer::onExportClick()
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
+    int count = 1;
     for  (Triangle triangle : inTriangulation.Triangles)
     {
         for  (Point point : triangle.Points())
@@ -151,6 +158,8 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
+        progressbar->setValue(count);
+        count++;
     }
 
     return data;

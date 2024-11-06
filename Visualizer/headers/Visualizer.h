@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
+#include <QProgressBar>
 
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
@@ -32,6 +33,8 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
+
+    QProgressBar* progressbar;
 
     OpenGlWidget* openglWidgetInput;
     OpenGlWidget* openglWidgetOutput;
