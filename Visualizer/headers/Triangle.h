@@ -16,10 +16,10 @@ public:
     ~Triangle();
 
     // Getter functions to access the private members 
-    Point P1();
-    Point P2();
-    Point P3();
-    Point Normal();
+    Point P1() const;
+    Point P2() const;
+    Point P3() const;
+    Point Normal() const;
 
-    std::vector<Point> Points();
+    std::vector<Point> Points() const;
 };
