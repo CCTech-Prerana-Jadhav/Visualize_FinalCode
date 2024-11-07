@@ -8,7 +8,7 @@
 class STLWriter : public Writer
 {
 public:
-    void Write(const std::string& filename, const Triangulation& triangulation);
+    void Write(const std::string& filename, const Triangulation& triangulation, QProgressBar*);
 
 private:
     std::string formulateText(Triangulation triangulation, Point point);

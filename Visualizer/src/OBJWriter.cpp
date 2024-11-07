@@ -4,13 +4,14 @@
 #include <iostream>
 #include "Point.h"
 
-void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation)
+void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation, QProgressBar* progressbar)
 {
     std::vector<Point> uniqueVerticesList;
     std::vector<Point> uniqueNormalsList;
     std::map<Point, int> VerticeMap;
     std::map<Point, int> NormalMap;
     std::ofstream outfile(filename);
+    int count = 1;
 
     for (auto triangle : triangulation.Triangles)
     {
@@ -18,23 +19,30 @@ void ObjWriter::Write(const std::string& filename, const Triangulation& triangul
         findAndAddPoint(triangle.P2(), uniqueVerticesList, VerticeMap);
         findAndAddPoint(triangle.P3(), uniqueVerticesList, VerticeMap);
         findAndAddPoint(triangle.Normal(), uniqueNormalsList, NormalMap);
+        progressbar->setRange(0, (uniqueVerticesList.size() + uniqueNormalsList.size() + triangulation.Triangles.size()));
     }
     if (outfile.is_open())
     {
 
-        for each (Point pt in uniqueVerticesList)
+        for (Point pt : uniqueVerticesList)
         {
             outfile << std::fixed << std::setprecision(6)
                 << formulateVertex(triangulation, pt);
+            progressbar->setValue(count);
+            count++;
         }
-        for each (Point normals in uniqueNormalsList)
+        for (Point normals : uniqueNormalsList)
         {
             outfile << std::fixed << std::setprecision(6)
                 << formulateVertexNormal(triangulation, normals);
+            progressbar->setValue(count);
+            count++;
         }
-        for each (Triangle tri in triangulation.Triangles)
+        for (Triangle tri : triangulation.Triangles)
         {
             outfile << formulateFace(tri, VerticeMap, NormalMap) << std::endl;
+            progressbar->setValue(count);
+            count++;
         }
     }
 }

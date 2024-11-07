@@ -3,11 +3,14 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-
+#include <QMenu>
+#include <QAction>
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
 #include <QProgressBar>
+
+using namespace Geometry;
 
 class Visualizer : public QMainWindow
 {

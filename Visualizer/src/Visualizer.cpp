@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QMenuBar>
 #include <QGridLayout>
 #include "Visualizer.h"
 #include "STLReader.h"
@@ -34,16 +35,18 @@ void Visualizer::setupUi()
 
     QGridLayout* layout = new QGridLayout(this);
 
-    layout->addWidget(loadFile, 0, 0);
-    layout->addWidget(translate, 0, 2);
-    layout->addWidget(openglWidgetInput, 1, 0);
-    layout->addWidget(openglWidgetOutput, 1, 2, 1, 2);
-    layout->addWidget(exportFile, 0, 3);
-    layout->addWidget(progressbar, 2, 0);
+    layout->addWidget(loadFile, 0, 0, 1, 2);
+    layout->addWidget(translate, 0, 2, 1, 2);
+    layout->addWidget(exportFile, 0, 4, 1, 2);
+    layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
+    layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
+    layout->addWidget(progressbar, 2, 0, 1, 6);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
+
+    progressbar->setValue(0);
 }
 
 void  Visualizer::onLoadFileClick()
@@ -83,9 +86,7 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.obj";
         ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
-
-        
+        writer.Write(exportFileName.toStdString(), triangulation, progressbar);
 
         loadOBJFile(exportFileName, outputTriangulation, openglWidgetOutput);
         QFile::remove(exportFileName);
@@ -94,7 +95,7 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.stl";
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), triangulation, progressbar);
 
         loadSTLFile(exportFileName, outputTriangulation, openglWidgetOutput);
         QFile::remove(exportFileName);
@@ -111,14 +112,14 @@ void Visualizer::onExportClick()
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.obj)"));
         ObjWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
+        writer.Write(fileName.toStdString(), outputTriangulation,progressbar);
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.stl)"));
         STLWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation);
+        writer.Write(fileName.toStdString(), outputTriangulation,progressbar);
     }
     
 }
