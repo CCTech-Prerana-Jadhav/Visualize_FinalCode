@@ -9,5 +9,6 @@
 - [x] Fix the bug in OBJWriter
 - [x] Open Application in fullscreen by default
 - [x] Add app icon
-- [ ] Add progress bar
+- [x] Add progress bar
 - [ ] Remove vector logic for faster processing
+- [x] Add const keyword
