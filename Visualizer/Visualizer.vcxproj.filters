@@ -37,15 +37,6 @@
     <ClCompile Include="src\Visualizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Triangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Triangulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Reader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,26 +66,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="headers\Visualizer.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="headers\OpenglWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="headers\GraphicsSynchronizer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="headers\Visualizer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\Point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\Triangulation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\Reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

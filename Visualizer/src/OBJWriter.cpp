@@ -5,7 +5,6 @@
 #include "Point.h"
 
 
-
 void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation)
 {
     std::vector<Point> uniqueVerticesList;

@@ -2,7 +2,7 @@
 #include<string>
 #include<vector>
 #include"Triangulation.h"
-
+using namespace Geometry;
 class Writer
 {
 	// Vitual function to write triangle data into file by filename

@@ -7,6 +7,7 @@
 #include<map>
 #include<unordered_map>
 
+
 #define TOLERANCE 0.0000001
 
 STLReader::STLReader()

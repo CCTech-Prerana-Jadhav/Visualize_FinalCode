@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 std::string STLWriter::formulateText(Triangulation triangulation, Point point)
 {
     double x = triangulation.UniqueNumbers[point.X()];

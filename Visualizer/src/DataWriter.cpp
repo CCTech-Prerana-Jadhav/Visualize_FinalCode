@@ -1,6 +1,7 @@
 #include "DataWriter.h"
 #include<fstream>
 #include<iomanip>
+using namespace Geometry;
 
 void DataWriter::Write(const std::string& filename, const Triangulation& triangulation)
 {
