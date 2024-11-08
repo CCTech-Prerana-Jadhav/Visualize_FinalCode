@@ -3,11 +3,10 @@
 
 using namespace Geometry;
 
-namespace Transform {
-	class Transformation {
-	public:
-		Transformation();
-		~Transformation();
+namespace Transformation {
+	class Transform {
+		Transform();
+		~Transform();
 		void scale(Triangulation& inputTriangulation, Triangulation& outputTriangulation, double scalingFactor);
 		void rotate();
 		void translate();

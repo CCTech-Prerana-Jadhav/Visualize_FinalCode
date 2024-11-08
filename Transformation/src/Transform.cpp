@@ -1,15 +1,15 @@
-#include "Transformation.h"
+#include "Transform.h"
 #include "Matrix4x4.h"
 #include <vector>
 #include <map>
 
-using namespace Transform;
+using namespace Transformation;
 
-Transformation::Transformation()
+Transform::Transform()
 {
 };
 
-Transformation::~Transformation()
+Transform::~Transform()
 {
 
 }
@@ -46,7 +46,7 @@ void Transformation::scale(Triangulation& inputTriangulation, Triangulation& out
 					pointIndices.push_back(pair->second);
 				}
 			}
-			if (pointIndices.size() == 9)
+			if (pointIndices.size() == 12)
 			{
 				Point p1 = Point(pointIndices[0], pointIndices[1], pointIndices[2]);
 				Point p2 = Point(pointIndices[3], pointIndices[4], pointIndices[5]);

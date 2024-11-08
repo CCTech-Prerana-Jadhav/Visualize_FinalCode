@@ -130,6 +130,10 @@ void Visualizer::onExportClick()
 
 void Visualizer::onTransformClick()
 {
+    Transform::Transformation transformation;
+    transformation.scale(triangulation, outputTriangulation, 5);
+    OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+    openglWidgetOutput->setData(data);
 }
 
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
