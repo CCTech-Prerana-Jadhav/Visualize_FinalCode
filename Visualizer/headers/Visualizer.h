@@ -3,27 +3,25 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-#include <QMenu>
-#include <QAction>
+
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
 #include <QProgressBar>
-
 using namespace Geometry;
-
 class Visualizer : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    Visualizer(QWidget *parent = nullptr);
+    Visualizer(QWidget* parent = nullptr);
     ~Visualizer();
 
 private slots:
     void onLoadFileClick();
     void onTranslateClick();
     void onExportClick();
+    void onTransformClick();
 
 private:
     void setupUi();
@@ -36,6 +34,7 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
+    QPushButton* transform;
 
     QProgressBar* progressbar;
 

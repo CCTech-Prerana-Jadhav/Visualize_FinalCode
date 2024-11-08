@@ -1,11 +1,11 @@
 #include <QFileDialog>
-#include <QMenuBar>
 #include <QGridLayout>
 #include "Visualizer.h"
 #include "STLReader.h"
 #include "OBJReader.h"
 #include "OBJWriter.h"
 #include "STLWriter.h"
+#include "Transformation.h"
 
 
 Visualizer::Visualizer(QWidget* parent)
@@ -16,6 +16,8 @@ Visualizer::Visualizer(QWidget* parent)
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
     connect(exportFile, &QPushButton::clicked, this, &Visualizer::onExportClick);
+    connect(transform, &QPushButton::clicked, this, &Visualizer::onTransformClick);
+
 }
 
 Visualizer::~Visualizer()
@@ -27,7 +29,8 @@ void Visualizer::setupUi()
 {
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
-    exportFile= new QPushButton("Export", this);
+    exportFile = new QPushButton("Export", this);
+    transform = new QPushButton("Transform", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
     progressbar = new QProgressBar(this);
@@ -37,16 +40,15 @@ void Visualizer::setupUi()
 
     layout->addWidget(loadFile, 0, 0, 1, 2);
     layout->addWidget(translate, 0, 2, 1, 2);
-    layout->addWidget(exportFile, 0, 4, 1, 2);
+    layout->addWidget(exportFile, 0, 4);
     layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
     layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
     layout->addWidget(progressbar, 2, 0, 1, 6);
+    layout->addWidget(transform, 0, 5);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     centralWidget->setLayout(layout);
-
-    progressbar->setValue(0);
 }
 
 void  Visualizer::onLoadFileClick()
@@ -57,7 +59,7 @@ void  Visualizer::onLoadFileClick()
     if (!fileName.isEmpty())
     {
         inputFilePath = fileName;
-        if(inputFilePath.endsWith(".stl",Qt::CaseInsensitive))
+        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
         {
             loadSTLFile(inputFilePath, triangulation, openglWidgetInput);
         }
@@ -81,12 +83,14 @@ void Visualizer::onTranslateClick()
 
     progressbar->setValue(0);
 
-    
+
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
         ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation, progressbar);
+        writer.Write(exportFileName.toStdString(), triangulation);
+
+
 
         loadOBJFile(exportFileName, outputTriangulation, openglWidgetOutput);
         QFile::remove(exportFileName);
@@ -95,7 +99,7 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.stl";
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation, progressbar);
+        writer.Write(exportFileName.toStdString(), triangulation);
 
         loadSTLFile(exportFileName, outputTriangulation, openglWidgetOutput);
         QFile::remove(exportFileName);
@@ -112,25 +116,29 @@ void Visualizer::onExportClick()
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.obj)"));
         ObjWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation,progressbar);
+        writer.Write(fileName.toStdString(), outputTriangulation);
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.stl)"));
         STLWriter writer;
-        writer.Write(fileName.toStdString(), outputTriangulation,progressbar);
+        writer.Write(fileName.toStdString(), outputTriangulation);
     }
-    
+
+}
+
+void Visualizer::onTransformClick()
+{
 }
 
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
     int count = 1;
-    for each (const Triangle& triangle in inTriangulation.Triangles)
+    for each (const Triangle & triangle in inTriangulation.Triangles)
     {
-        for each (const Point& point in triangle.Points())
+        for each (const Point & point in triangle.Points())
         {
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);

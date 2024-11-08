@@ -141,11 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="headers\Matrix4x4.h" />
     <ClInclude Include="Headers\Point.h" />
     <ClInclude Include="headers\Triangle.h" />
     <ClInclude Include="headers\Triangulation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Matrix4x4.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\Triangulation.cpp" />
