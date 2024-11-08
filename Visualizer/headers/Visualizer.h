@@ -9,6 +9,8 @@
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
 
+using namespace Geometry;
+
 class Visualizer : public QMainWindow
 {
     Q_OBJECT
@@ -21,6 +23,7 @@ private slots:
     void onLoadFileClick();
     void onTranslateClick();
     void onExportClick();
+    void onTransformClick();
 
 private:
     void setupUi();
@@ -33,6 +36,7 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
+    QPushButton* transform;
 
     QProgressBar* progressbar;
 

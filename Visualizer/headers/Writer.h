@@ -5,6 +5,8 @@
 #include"Triangulation.h"
 #include <QProgressBar>
 
+using namespace Geometry;
+
 class Writer
 {
 	// Vitual function to write triangle data into file by filename

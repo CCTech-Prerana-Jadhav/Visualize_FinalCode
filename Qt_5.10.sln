@@ -5,16 +5,42 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Visualizer", "Visualizer\Visualizer.vcxproj", "{595B6631-65DC-44BD-8A33-E80F27E7A006}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Geometry", "Geometry\Geometry.vcxproj", "{B02C440B-23A4-46E2-9C12-807183102A76}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Transformation", "Transformation\Transformation.vcxproj", "{E73B9AEC-FDDB-445B-811C-3C91732E893A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Debug|x64.ActiveCfg = Debug|x64
 		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Debug|x64.Build.0 = Debug|x64
+		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Debug|x86.ActiveCfg = Debug|x64
+		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Debug|x86.Build.0 = Debug|x64
 		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Release|x64.ActiveCfg = Release|x64
 		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Release|x64.Build.0 = Release|x64
+		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Release|x86.ActiveCfg = Release|x64
+		{595B6631-65DC-44BD-8A33-E80F27E7A006}.Release|x86.Build.0 = Release|x64
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Debug|x64.ActiveCfg = Debug|x64
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Debug|x64.Build.0 = Debug|x64
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Debug|x86.ActiveCfg = Debug|Win32
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Debug|x86.Build.0 = Debug|Win32
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Release|x64.ActiveCfg = Release|x64
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Release|x64.Build.0 = Release|x64
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Release|x86.ActiveCfg = Release|Win32
+		{B02C440B-23A4-46E2-9C12-807183102A76}.Release|x86.Build.0 = Release|Win32
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Debug|x64.ActiveCfg = Debug|x64
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Debug|x64.Build.0 = Debug|x64
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Debug|x86.ActiveCfg = Debug|Win32
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Debug|x86.Build.0 = Debug|Win32
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Release|x64.ActiveCfg = Release|x64
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Release|x64.Build.0 = Release|x64
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Release|x86.ActiveCfg = Release|Win32
+		{E73B9AEC-FDDB-445B-811C-3C91732E893A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
