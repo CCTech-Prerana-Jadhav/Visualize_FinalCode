@@ -27,7 +27,7 @@ void Visualizer::setupUi()
 {
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
-    exportFile= new QPushButton("Export", this);
+    exportFile = new QPushButton("Export", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
@@ -54,7 +54,7 @@ void  Visualizer::onLoadFileClick()
     if (!fileName.isEmpty())
     {
         inputFilePath = fileName;
-        if(inputFilePath.endsWith(".stl",Qt::CaseInsensitive))
+        if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
         {
             STLReader reader;
             reader.read(inputFilePath.toStdString(), triangulation);
@@ -80,12 +80,15 @@ void Visualizer::onTranslateClick()
         QFileDialog::ShowDirsOnly
         | QFileDialog::DontResolveSymlinks);
 
-    
+
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, mat);
         ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
 
         // reload file to check and load in output renderer
         OBJReader reader;
@@ -98,8 +101,11 @@ void Visualizer::onTranslateClick()
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, mat);
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
 
         // reload file to check and load in output renderer
         STLReader reader;

@@ -2,12 +2,15 @@
 #include "Triangle.h"
 #include<vector>
 
-class Triangulation
+namespace Geometry
 {
-public:
-    Triangulation();
-    ~Triangulation();
+    class Triangulation
+    {
+    public:
+        Triangulation();
+        ~Triangulation();
 
-    std::vector<double> UniqueNumbers;
-    std::vector<Triangle> Triangles;
-};
+        std::vector<double> UniqueNumbers;
+        std::vector<Triangle> Triangles;
+    };
+}

@@ -5,8 +5,11 @@
 #include <QtWidgets/QTextEdit>
 
 #include "Triangulation.h"
+#include "Transformation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
+
+using namespace Geometry;
 
 class Visualizer : public QMainWindow
 {

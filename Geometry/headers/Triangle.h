@@ -2,24 +2,27 @@
 #include <vector>
 #include "point.h"
 
-class Triangle
+namespace Geometry
 {
-    // Three points representing the vertices of the triangle
-private:
-    Point p1;
-    Point p2;
-    Point p3;
-    Point normal;
+    class Triangle
+    {
+        // Three points representing the vertices of the triangle
+    private:
+        Point p1;
+        Point p2;
+        Point p3;
+        Point normal;
 
-public:
-    Triangle(Point normal, Point p1, Point p2, Point p3);
-    ~Triangle();
+    public:
+        Triangle(Point normal, Point p1, Point p2, Point p3);
+        ~Triangle();
 
-    // Getter functions to access the private members 
-    Point P1();
-    Point P2();
-    Point P3();
-    Point Normal();
+        // Getter functions to access the private members 
+        Point P1();
+        Point P2();
+        Point P3();
+        Point Normal();
 
-    std::vector<Point> Points();
-};
+        std::vector<Point> Points();
+    };
+}

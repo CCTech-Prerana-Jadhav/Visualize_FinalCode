@@ -2,6 +2,7 @@
 #include<string>
 #include<vector>
 #include"Triangulation.h"
+using namespace Geometry;
 
 class Writer
 {

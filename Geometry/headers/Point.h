@@ -1,18 +1,21 @@
 #pragma once
 
-class Point
+namespace Geometry
 {
-	int mX;
-	int mY;
-	int mZ;
+	class Point
+	{
+		int mX;
+		int mY;
+		int mZ;
 
-public:
-	Point(int x, int y, int z);
-	~Point();
+	public:
+		Point(int x, int y, int z);
+		~Point();
 
-	int X();
-	int Y();
-	int Z();
+		int X();
+		int Y();
+		int Z();
 
-	bool operator<(const Point& other) const;
-};
+		bool operator<(const Point& other) const;
+	};
+}
