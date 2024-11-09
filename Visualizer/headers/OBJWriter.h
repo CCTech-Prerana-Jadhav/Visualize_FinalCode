@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+using namespace Geometry;
 class ObjWriter : public Writer
 {
 public:

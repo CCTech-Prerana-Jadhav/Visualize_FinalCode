@@ -1,6 +1,6 @@
 #include "STLWriter.h"
-#include<fstream>
-#include<iomanip>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 

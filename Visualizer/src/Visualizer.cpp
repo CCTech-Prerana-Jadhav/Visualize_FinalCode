@@ -84,6 +84,9 @@ void Visualizer::onTranslateClick()
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, mat);
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 
@@ -98,6 +101,9 @@ void Visualizer::onTranslateClick()
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, mat);
         STLWriter writer;
         writer.Write(exportFileName.toStdString(), triangulation);
 

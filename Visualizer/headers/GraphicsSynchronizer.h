@@ -18,7 +18,6 @@ private slots:
     void synchronize(float zoomLevel, QVector3D rotation, QVector2D panOffset);
 
 private:
-
     OpenGlWidget* left;
     OpenGlWidget* right;
 };

@@ -1,6 +1,6 @@
 #include "DataWriter.h"
-#include<fstream>
-#include<iomanip>
+#include <fstream>
+#include <iomanip>
 
 void DataWriter::Write(const std::string& filename, const Triangulation& triangulation)
 {
