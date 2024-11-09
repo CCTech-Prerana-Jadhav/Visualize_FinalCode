@@ -97,8 +97,8 @@ void Visualizer::onTranslateClick()
         }
         qDebug() << outputTriangulation.Triangles[0].P1().Z();
 
-        //ObjWriter writer;
-        //writer.Write(exportFileName.toStdString(), outputTriangulation);
+        ObjWriter writer;
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
         // reload file to check and load in output renderer
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);

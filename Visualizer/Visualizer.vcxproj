@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)headers;E:\AryanWorkplace\Github\Visualizer\Geometry\header;E:\AryanWorkplace\Github\Visualizer\Transformation\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)headers;$(SolutionDir)Geometry\header;$(SolutionDir)Transformation\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Geometry.lib;Transformation.lib;%(AdditionalDependencies)</AdditionalDependencies>
