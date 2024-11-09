@@ -1,6 +1,7 @@
 #include "Point.h"
 
-Point::Point(int x, int y, int z)
+using namespace Geometry;
+Point::Point(int x = 0, int y = 0, int z = 0)
 	: mX(x), mY(y), mZ(z)
 {
 }
@@ -23,6 +24,7 @@ int Point::Z()
 {
 	return mZ;
 }
+
 
 bool Point::operator<(const Point& other) const
 {

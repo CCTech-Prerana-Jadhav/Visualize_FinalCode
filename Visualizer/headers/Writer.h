@@ -2,6 +2,9 @@
 #include<string>
 #include<vector>
 #include"Triangulation.h"
+#include"Transformation.h"
+
+using namespace Geometry;
 
 class Writer
 {

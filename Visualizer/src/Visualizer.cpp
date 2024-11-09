@@ -8,7 +8,6 @@
 #include "STLWriter.h"
 #include "DataWriter.h"
 
-
 Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -89,8 +88,17 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.obj";
         inputFilePath = exportFileName;
-        ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation =   t.scaling(triangulation,mat);
+        for (auto i : outputTriangulation.Triangles)
+        {
+                qDebug() << i.P1().X() << i.P1().Y() << i.P1().Z() << "|" << i.P2().X() << i.P2().Y() << i.P2().Z() << "|" << i.P3().X() << i.P3().Y() << i.P3().Z();
+        }
+        qDebug() << outputTriangulation.Triangles[0].P1().Z();
+
+        //ObjWriter writer;
+        //writer.Write(exportFileName.toStdString(), outputTriangulation);
         // reload file to check and load in output renderer
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
@@ -104,8 +112,12 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.stl";
         inputFilePath = exportFileName;
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, mat);
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
+
 
         // reload file to check and load in output renderer
         STLReader reader;
@@ -148,7 +160,7 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
             data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
         }
-
+        
         Point normal = triangle.Normal();
 
         for (size_t i = 0; i < 3; i++)
@@ -158,7 +170,6 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
     }
-
     return data;
 }
 
