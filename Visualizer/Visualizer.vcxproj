@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)/headers;$(SolutionDir)/Geometry/headers;$(SolutionDir)/Tranformation/headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/headers;$(SolutionDir)/Geometry/headers;$(SolutionDir)/Transformation/headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Geometry.lib;Transformation.lib;%(AdditionalDependencies)</AdditionalDependencies>

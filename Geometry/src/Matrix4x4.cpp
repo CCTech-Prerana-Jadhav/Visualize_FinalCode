@@ -22,7 +22,7 @@ void Geometry::Matrix4x4::multiply(vector<double>& point)
 	for (int i = 0; i < 4; ++i) {
 		double temp = 0;
 		for (int j = 0; j < 4; ++j) {
-			temp += matrix[i][j] * point[i];
+			temp += matrix[i][j] * point[j];
 		}
 		point[i] = temp;
 	}

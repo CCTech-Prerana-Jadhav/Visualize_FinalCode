@@ -21,7 +21,9 @@ private slots:
     void onLoadFileClick();
     void onTranslateClick();
     void onExportClick();
-    void onTransformClick();
+    void onScaleClick();
+    void onRotateClick();
+    void onDistanceTranslateClick();
 
 private:
     void setupUi();
@@ -34,7 +36,9 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
-    QPushButton* transform;
+    QPushButton* scale;
+    QPushButton* rotate;
+    QPushButton* distanceTranslation;
 
     QProgressBar* progressbar;
 
