@@ -136,14 +136,14 @@ void Visualizer::onExportClick()
 void Visualizer::onScaleClick()
 {
     Transform::Transformation transformation;
-    transformation.scale(triangulation, outputTriangulation, 5);
+    transformation.scale(triangulation, outputTriangulation, 10);
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
     openglWidgetOutput->setData(data);
 }
 
 void Visualizer::onRotateClick()
 {
-    int axis[3] = { 0,0,1 };
+    double axis[3] = { 1.0,0.0,0.0 };
     Transform::Transformation transformation;
     transformation.rotate(triangulation, outputTriangulation, 45, axis);
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);

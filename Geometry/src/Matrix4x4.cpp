@@ -17,13 +17,13 @@ Geometry::Matrix4x4::~Matrix4x4()
     
 }
 
-void Geometry::Matrix4x4::multiply(vector<double>& point)
+vector<double> Geometry::Matrix4x4::multiply(vector<double>& point)
 {
+	vector<double> result = {0,0,0,0};
     for (int i = 0; i < 4; ++i) {
-		double temp = 0;
         for (int j = 0; j < 4; ++j) {
-			temp += matrix[i][j] * point[j];
+			result[i] += matrix[i][j] * point[j];
         }
-		point[i] = temp;
-    }  
+    }
+	return result;
 }

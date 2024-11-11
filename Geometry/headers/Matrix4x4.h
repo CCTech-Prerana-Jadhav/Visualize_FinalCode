@@ -8,6 +8,6 @@ namespace Geometry {
 		vector<vector<double>> matrix;
 		Matrix4x4();
 		~Matrix4x4();
-		void multiply(vector<double>& point);
+		vector<double> multiply(vector<double>& point);
 	};
 }

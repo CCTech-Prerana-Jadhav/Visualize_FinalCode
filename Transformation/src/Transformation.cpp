@@ -4,6 +4,7 @@
 #include <cmath>
 
 #define TOLERANCE 0.0000001
+#define PI 3.14
 
 using namespace Transform;
 
@@ -87,11 +88,12 @@ void Transformation::processPoint(double value, Triangulation& outputTriangulati
 	}
 }
 
-void Transform::Transformation::rotate(Triangulation& inputTriangulation, Triangulation& outputTriangulation, double angle, int axis[3])
+void Transform::Transformation::rotate(Triangulation& inputTriangulation, Triangulation& outputTriangulation, double angle, double axis[3])
 {
-	double radian = angle * 0.01745329;
+	double radian = angle * (PI / 180);
 	Matrix4x4 matrix4x4;
 	std::vector<double> point;
+	std::vector<double> rotatedPoint;
 	std::map<double, int, Transformation> uniqueValueMap;
 	std::vector<int> pointIndices;
 		if (axis[0] == 1) {
@@ -123,10 +125,10 @@ void Transform::Transformation::rotate(Triangulation& inputTriangulation, Triang
 			point.push_back(inputTriangulation.UniqueNumbers[p.Y()]);
 			point.push_back(inputTriangulation.UniqueNumbers[p.Z()]);
 			point.push_back(1.0);
-			matrix4x4.multiply(point);
+			rotatedPoint = matrix4x4.multiply(point);
 			for (int i = 0; i < 3; i++)
 			{
-				processPoint(point[i], outputTriangulation, uniqueValueMap, pointIndices);
+				processPoint(rotatedPoint[i], outputTriangulation, uniqueValueMap, pointIndices);
 			}
 			point.clear();
 		}
@@ -134,6 +136,8 @@ void Transform::Transformation::rotate(Triangulation& inputTriangulation, Triang
 		point.push_back(inputTriangulation.UniqueNumbers[p.X()]);
 		point.push_back(inputTriangulation.UniqueNumbers[p.Y()]);
 		point.push_back(inputTriangulation.UniqueNumbers[p.Z()]);
+		/*point.push_back(1.0); */
+		/*matrix4x4.multiply(point);*/ 
 		for (int i = 0; i < 3; i++)
 		{
 			processPoint(point[i], outputTriangulation, uniqueValueMap, pointIndices);
