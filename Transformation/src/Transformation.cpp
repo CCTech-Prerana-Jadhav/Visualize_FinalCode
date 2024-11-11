@@ -97,26 +97,22 @@ void Transform::Transformation::rotate(Triangulation& inputTriangulation, Triang
 	std::map<double, int, Transformation> uniqueValueMap;
 	std::vector<int> pointIndices;
 		if (axis[0] == 1) {
-			matrix4x4.matrix = { {1,0,0,0},
-				{0,cos(radian),-sin(radian),0},
-				{0,sin(radian),cos(radian),0},
-				{0,0,0,1} };
+			matrix4x4.matrix[1][1] = cos(radian);
+			matrix4x4.matrix[1][2] = -sin(radian);
+			matrix4x4.matrix[2][1] = sin(radian);
+			matrix4x4.matrix[2][2] = cos(radian);
 		}
 		else if (axis[1] == 1) {
-			matrix4x4.matrix = {
-				{cos(radian), 0, sin(radian), 0},
-				{0, 1, 0, 0},
-				{-sin(radian), 0, cos(radian), 0},
-				{0, 0, 0, 1}
-			};
+				matrix4x4.matrix[0][0] = cos(radian);
+				matrix4x4.matrix[0][2] = sin(radian);
+				matrix4x4.matrix[2][0] = -sin(radian);
+				matrix4x4.matrix[2][2] = cos(radian);
 		}
 		else if (axis[2] == 1) {
-			matrix4x4.matrix = {
-				{cos(radian), -sin(radian), 0, 0},
-				{sin(radian), cos(radian), 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			};
+			matrix4x4.matrix[0][0] = cos(radian);
+			matrix4x4.matrix[0][1] = -sin(radian);
+			matrix4x4.matrix[1][0] = sin(radian);
+			matrix4x4.matrix[1][2] = cos(radian);
 		}
 
 	for (Triangle tri : inputTriangulation.Triangles) {

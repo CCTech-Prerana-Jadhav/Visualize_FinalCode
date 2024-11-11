@@ -6,6 +6,7 @@ namespace Geometry {
 	{
 	public:
 		vector<vector<double>> matrix;
+
 		Matrix4x4();
 		~Matrix4x4();
 		vector<double> multiply(vector<double>& point);

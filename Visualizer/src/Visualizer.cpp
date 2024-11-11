@@ -143,7 +143,7 @@ void Visualizer::onScaleClick()
 
 void Visualizer::onRotateClick()
 {
-    double axis[3] = { 1.0,0.0,0.0 };
+    double axis[3] = { 0.0,1.0,0.0 };
     Transform::Transformation transformation;
     transformation.rotate(triangulation, outputTriangulation, 45, axis);
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
