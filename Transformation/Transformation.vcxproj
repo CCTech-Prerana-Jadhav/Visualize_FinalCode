@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="headers\Transform.cpp" />
+    <ClCompile Include="headers\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\Transform.h" />
+    <ClInclude Include="headers\Transformation.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

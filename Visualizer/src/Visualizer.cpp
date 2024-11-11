@@ -6,10 +6,8 @@
 #include "OBJReader.h"
 #include "OBJWriter.h"
 #include "STLWriter.h"
-#include "DataWriter.h"
-#include "Transform.h"
+#include "Transformation.h"
 
-using namespace Transformation;
 
 Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
@@ -19,38 +17,42 @@ Visualizer::Visualizer(QWidget* parent)
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
     connect(exportFile, &QPushButton::clicked, this, &Visualizer::onExportClick);
-    connect(transform, &QPushButton::clicked, this, &Visualizer::onTransformClick);
-
+    connect(scale, &QPushButton::clicked, this, &Visualizer::onScaleClick);
+    connect(rotate, &QPushButton::clicked, this, &Visualizer::onRotateClick);
+    connect(distanceTranslation, &QPushButton::clicked, this, &Visualizer::onDistanceTranslateClick);
 }
 
 Visualizer::~Visualizer()
 {
+
 }
 
 void Visualizer::setupUi()
 {
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
-    exportFile= new QPushButton("Export", this);
-    transform = new QPushButton("Transform", this);
+    exportFile = new QPushButton("Export", this);
+    scale = new QPushButton("Scale", this);
+    rotate = new QPushButton("Rotate", this);
+    distanceTranslation = new QPushButton("Distance Translate", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
     progressbar = new QProgressBar(this);
     customStatusBar = new QStatusBar(this);
-
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QGridLayout* layout = new QGridLayout(this);
 
     layout->addWidget(loadFile, 0, 0, 1, 2);
     layout->addWidget(translate, 0, 2, 1, 2);
-    layout->addWidget(exportFile, 0, 4);
-    layout->addWidget(openglWidgetInput, 1, 0, 1, 3);
-    layout->addWidget(openglWidgetOutput, 1, 3, 1, 3);
-    layout->addWidget(progressbar, 2,0,1,6);
-    layout->addWidget(customStatusBar, 3, 0, 1, 6);
-    layout->addWidget(transform, 0, 5);
-
+    layout->addWidget(exportFile, 0, 4, 1, 2);
+    layout->addWidget(openglWidgetInput, 2, 0, 1, 3);
+    layout->addWidget(openglWidgetOutput, 2, 3, 1, 3);
+    layout->addWidget(progressbar, 3, 0, 1, 6);
+    layout->addWidget(scale, 1, 0, 1, 2);
+    layout->addWidget(rotate, 1, 2, 1, 2);
+    layout->addWidget(customStatusBar, 4, 0, 1, 6);
+    layout->addWidget(distanceTranslation, 1, 4, 1, 2);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -62,7 +64,6 @@ void Visualizer::setupUi()
 
 void  Visualizer::onLoadFileClick()
 {
-    customStatusBar->showMessage("Select a file to load...");
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open File"), "", tr("files (*.stl *.obj)"));
 
@@ -71,24 +72,17 @@ void  Visualizer::onLoadFileClick()
         inputFilePath = fileName;
         if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
         {
-            customStatusBar->showMessage("Loading STL file...");
             loadSTLFile(inputFilePath, triangulation, openglWidgetInput);
         }
         else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
         {
-            customStatusBar->showMessage("Loading OBJ file...");
             loadOBJFile(inputFilePath, triangulation, openglWidgetInput);
-        }
-        else
-        {
-            customStatusBar->showMessage("No file selected.");
         }
     }
 }
 
 void Visualizer::onTranslateClick()
 {
-    customStatusBar->showMessage("Select directory to export temporary file...");
     QFileDialog dialog(this);
 
     dialog.setFileMode(QFileDialog::Directory);
@@ -105,54 +99,66 @@ void Visualizer::onTranslateClick()
     {
         QString exportFileName = dir + "/output.obj";
         ObjWriter writer;
-        customStatusBar->showMessage("Converting to OBJ File...");
-        writer.Write(exportFileName.toStdString(), triangulation,progressbar);
+        writer.Write(exportFileName.toStdString(), triangulation, progressbar);
+
+
+
         loadOBJFile(exportFileName, outputTriangulation, openglWidgetOutput);
+        QFile::remove(exportFileName);
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
         STLWriter writer;
-        customStatusBar->showMessage("Converting to STL File...");
         writer.Write(exportFileName.toStdString(), triangulation, progressbar);
-        loadSTLFile(exportFileName, outputTriangulation, openglWidgetOutput);
 
+        loadSTLFile(exportFileName, outputTriangulation, openglWidgetOutput);
+        QFile::remove(exportFileName);
     }
 
 }
 
 void Visualizer::onExportClick()
 {
-    customStatusBar->showMessage("Select a location to save the file...");
     QFileDialog dialog(this);
-    progressbar->setValue(0);
+
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.obj)"));
         ObjWriter writer;
-        customStatusBar->showMessage("Exporting OBJ file...");
         writer.Write(fileName.toStdString(), outputTriangulation, progressbar);
-        customStatusBar->showMessage("OBJ file exported successfully.");
     }
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save File"), "", tr("files (*.stl)"));
         STLWriter writer;
-        customStatusBar->showMessage("Exporting STL file...");
         writer.Write(fileName.toStdString(), outputTriangulation, progressbar);
-        customStatusBar->showMessage("STL file exported successfully.");
     }
 
 }
 
-void Visualizer::onTransformClick()
+void Visualizer::onScaleClick()
 {
-    Transform transform;
-    transform.Scale(triangulation, outputTriangulation, 5);
+    Transform::Transformation transformation;
+    transformation.scale(triangulation, outputTriangulation, 9);
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
     openglWidgetOutput->setData(data);
+}
+
+void Visualizer::onRotateClick()
+{
+    int axis[3] = { 1,0,0 };
+    Transform::Transformation transformation;
+    transformation.rotate(triangulation, outputTriangulation, 45 ,axis);
+
+    OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+    openglWidgetOutput->setData(data);
+}
+
+void Visualizer::onDistanceTranslateClick()
+{
 }
 
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
@@ -187,27 +193,21 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
 void Visualizer::loadOBJFile(const QString& filepath, Triangulation& triangulation, OpenGlWidget* openglWidgetWindow)
 {
     OBJReader objreader;
-    customStatusBar->showMessage("Reading OBJ File ...");
     objreader.read(filepath.toStdString(), triangulation);
 
     progressbar->setRange(0, triangulation.Triangles.size());
 
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
     openglWidgetWindow->setData(data);
-
-    customStatusBar->showMessage("OBJ file loaded successfully.");
 }
 
 void Visualizer::loadSTLFile(const QString& filepath, Triangulation& triangulation, OpenGlWidget* openglWidgetWindow)
 {
     STLReader stlreader;
-    customStatusBar->showMessage("Reading STL File ...");
     stlreader.read(filepath.toStdString(), triangulation);
 
     progressbar->setRange(0, triangulation.Triangles.size());
 
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(triangulation);
     openglWidgetWindow->setData(data);
-
-    customStatusBar->showMessage("STL file loaded successfully.");
 }

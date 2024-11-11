@@ -11,7 +11,7 @@ namespace Geometry {
 
         ~Matrix4x4();
 
-        void multiply(vector<double>& point) ;
+        void multiply(vector<double>& point);
 
     };
 }
