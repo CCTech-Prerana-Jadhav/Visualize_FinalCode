@@ -6,8 +6,9 @@
 #include "OBJWriter.h"
 #include "STLWriter.h"
 #include "DataWriter.h"
-
-int count = 0;
+#include "Transformation.h"
+#include "Matrix4x4.h"
+int Vcount = 0;
 
 Visualizer::Visualizer(QWidget* parent) : QMainWindow(parent)
 {
@@ -90,10 +91,27 @@ void Visualizer::onTranslateClick()
     if (!dir.isEmpty())
     {
         exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
-        writeFile(exportFileName, triangulation);
+        Transformer::Transformation TransObj;
+        Geometry::Matrix4x4 matObj;
+		//-----------------Scaling-------------------
+        //Triangulation scaledTriangulation = TransObj.scale(triangulation, 100.0, 2.0, 3.0);
+        //writeFile(exportFileName, scaledTriangulation);
+        //outputTriangulation = readFile(exportFileName);
+        //OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        //openglWidgetOutput->setData(data);
+		//-----------------Translation-------------------
+        Triangulation translatedtriangulation = TransObj.translate(triangulation, 1.0, 2.0, 3.0);
+        writeFile(exportFileName, translatedtriangulation);
         outputTriangulation = readFile(exportFileName);
         OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
         openglWidgetOutput->setData(data);
+		//-----------------Rotation-------------------
+        //double arr[3] = {0, 1, 2};
+        //Triangulation translatedtriangulation = TransObj.rotate(triangulation, 45.0, arr);
+        //writeFile(exportFileName, translatedtriangulation);
+        //outputTriangulation = readFile(exportFileName);
+        //OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        //openglWidgetOutput->setData(data);
     }
 }
 
@@ -162,9 +180,9 @@ OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Trian
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
             data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
         }
-        progressBar->setValue(count);
+        progressBar->setValue(Vcount);
         progressBar->setRange(0, inTriangulation.Triangles.size()-1);
-        count++;
+        Vcount++;
     }
     return data;
 }

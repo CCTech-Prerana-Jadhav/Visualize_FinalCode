@@ -5,6 +5,8 @@
 #include <vector>
 #include "Reader.h"
 
+using namespace Geometry;
+
 class OBJReader : public Reader
 {
 public:

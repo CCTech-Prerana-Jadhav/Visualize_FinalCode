@@ -14,10 +14,10 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
 
 public:
-        struct Data
-        {
-            QVector<GLfloat> vertices;
-            QVector<GLfloat> normals;
+    struct Data
+    {
+        QVector<GLfloat> vertices;
+        QVector<GLfloat> normals;
     };
 
 public:
@@ -30,7 +30,7 @@ public:
     void sync(float zoomLevel, QVector3D rotation, QVector2D panOffset);
 
 signals:
-        void viewChange(float zoomLevel, QVector3D rotation, QVector2D panOffset);
+    void viewChange(float zoomLevel, QVector3D rotation, QVector2D panOffset);
 
 protected:
     void initializeGL() override;
@@ -57,5 +57,5 @@ private:
     QPoint lastMousePosition;
 
     Data data;
-    bool isInitialized; 
+    bool isInitialized;
 };

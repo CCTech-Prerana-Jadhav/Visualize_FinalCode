@@ -8,6 +8,8 @@
 
 #define TOLERANCE 0.0000001
 
+using namespace Geometry;
+
 STLReader::STLReader()
 {
 }

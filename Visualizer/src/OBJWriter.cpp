@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Point.h"
 
+using namespace Geometry;
+
 void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation, QProgressBar* progressBar)
 {
     int count = 0;

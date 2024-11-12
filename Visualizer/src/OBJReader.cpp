@@ -13,6 +13,9 @@
 #include <map>
 
 #define TOLERANCE 0.0000001
+
+using namespace Geometry;
+
 OBJReader::OBJReader()
 {
 }

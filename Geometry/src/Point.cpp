@@ -1,5 +1,7 @@
 #include "Point.h"
 
+using namespace Geometry;
+
 Point::Point(int x, int y, int z)
 	: mX(x), mY(y), mZ(z)
 {

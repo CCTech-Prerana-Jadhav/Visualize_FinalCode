@@ -9,6 +9,8 @@
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
 
+using namespace Geometry;
+
 class Visualizer : public QMainWindow
 {
     Q_OBJECT
