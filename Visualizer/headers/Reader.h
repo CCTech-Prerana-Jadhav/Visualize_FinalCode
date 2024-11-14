@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include "Triangulation.h"
+using namespace Geometry;
 
 class Reader
 {

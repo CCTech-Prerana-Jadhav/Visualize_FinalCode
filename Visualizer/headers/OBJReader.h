@@ -3,6 +3,7 @@
 #include <string> 
 #include "Triangulation.h"
 #include "Reader.h"
+using namespace Geometry;
 
 class OBJReader : public Reader
 {

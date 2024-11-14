@@ -6,6 +6,9 @@
 #include "OBJWriter.h"
 #include "STLWriter.h"
 #include "DataWriter.h"
+#include "Transformation.h"
+
+using namespace Transformer;
 
 Visualizer::Visualizer(QWidget* parent)
     : QMainWindow(parent)
@@ -15,6 +18,9 @@ Visualizer::Visualizer(QWidget* parent)
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
     connect(exportFile, &QPushButton::clicked, this, &Visualizer::onExportClick);
+    connect(scale, &QPushButton::clicked, this, &Visualizer::onScaleClick);
+    connect(rotate, &QPushButton::clicked, this, &Visualizer::onRotateClick);
+    connect(distanceTranslation, &QPushButton::clicked, this, &Visualizer::onDistanceTranslateClick);
 }
 
 Visualizer::~Visualizer()
@@ -26,16 +32,25 @@ void Visualizer::setupUi()
     loadFile = new QPushButton("Load File", this);
     translate = new QPushButton("Translate", this);
     exportFile = new QPushButton("Export", this);
+    scale = new QPushButton("Scale", this);
+    rotate = new QPushButton("Rotate", this);
+    distanceTranslation = new QPushButton("Distance Translate", this);
     openglWidgetInput = new OpenGlWidget(this);
     openglWidgetOutput = new OpenGlWidget(this);
+    progressbar = new QProgressBar(this);
     graphicsSynchronizer = new GraphicsSynchronizer(openglWidgetInput, openglWidgetOutput);
 
     QGridLayout* layout = new QGridLayout(this);
-    layout->addWidget(loadFile, 0, 0);
-    layout->addWidget(translate, 0, 1);
-    layout->addWidget(openglWidgetInput, 1, 0);
-    layout->addWidget(openglWidgetOutput, 1, 1, 1, 2);
-    layout->addWidget(exportFile, 0, 2);
+
+    layout->addWidget(loadFile, 0, 0, 1, 2);
+    layout->addWidget(translate, 0, 2, 1, 2);
+    layout->addWidget(exportFile, 0, 4, 1, 2);
+    layout->addWidget(openglWidgetInput, 2, 0, 1, 3);
+    layout->addWidget(openglWidgetOutput, 2, 3, 1, 3);
+    layout->addWidget(progressbar, 3, 0, 1, 6);
+    layout->addWidget(scale, 1, 0, 1, 2);
+    layout->addWidget(rotate, 1, 2, 1, 2);
+    layout->addWidget(distanceTranslation, 1, 4, 1, 2);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -70,8 +85,65 @@ void Visualizer::onTranslateClick()
     OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
     openglWidgetOutput->setData(data);
 
-    // Clean up temporary file
     QFile::remove(exportFileName);
+}
+
+void Visualizer::onScaleClick()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!dir.isEmpty())
+    {
+        QString exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
+        Transformer::Transformation TransObj;
+        Geometry::Matrix4x4 matObj;
+
+        Triangulation scaledTriangulation = TransObj.scale(triangulation, 2.0, 2.0, 2.0);
+        writeFile(exportFileName, scaledTriangulation);
+        outputTriangulation = readFile(exportFileName);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        openglWidgetOutput->setData(data);
+
+        QFile::remove(exportFileName);
+    }
+}
+
+void Visualizer::onRotateClick()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!dir.isEmpty())
+    {
+        QString exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
+        Transformer::Transformation TransObj;
+        Geometry::Matrix4x4 matObj;
+
+        Triangulation translatedtriangulation = TransObj.translate(triangulation, 1.0, 2.0, 3.0);
+        writeFile(exportFileName, translatedtriangulation);
+        outputTriangulation = readFile(exportFileName);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        openglWidgetOutput->setData(data);
+
+        QFile::remove(exportFileName);
+    }
+}
+
+void Visualizer::onDistanceTranslateClick()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!dir.isEmpty())
+    {
+        QString exportFileName = dir + (inputFilePath.endsWith(".stl", Qt::CaseInsensitive) ? "/output.obj" : "/output.stl");
+        Transformer::Transformation TransObj;
+        Geometry::Matrix4x4 matObj;
+
+        double arr[3] = { 1,0,0 };
+        Triangulation translatedtriangulation = TransObj.rotate(triangulation, 45.0, arr);
+        writeFile(exportFileName, translatedtriangulation);
+        outputTriangulation = readFile(exportFileName);
+        OpenGlWidget::Data data = convertTrianglulationToGraphicsObject(outputTriangulation);
+        openglWidgetOutput->setData(data);
+
+        QFile::remove(exportFileName);
+    }
 }
 
 void Visualizer::onExportClick()
@@ -86,39 +158,44 @@ void Visualizer::onExportClick()
 OpenGlWidget::Data Visualizer::convertTrianglulationToGraphicsObject(const Triangulation& inTriangulation)
 {
     OpenGlWidget::Data data;
-        for each (Triangle triangle in inTriangulation.Triangles)
+    int count = 1;
+    for (Triangle triangle : inTriangulation.Triangles)
+    {
+        for (Point point : triangle.Points())
         {
-            for each (Point point in triangle.Points())
-            {
-                data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
-                data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
-                data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
-            }
-    
-            Point normal = triangle.Normal();
-    
-            for (size_t i = 0; i < 3; i++)
-            {
-                data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
-                data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
-                data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
-            }
+            data.vertices.push_back(inTriangulation.UniqueNumbers[point.X()]);
+            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Y()]);
+            data.vertices.push_back(inTriangulation.UniqueNumbers[point.Z()]);
         }
-    
-        return data;
+
+        Point normal = triangle.Normal();
+
+        for (size_t i = 0; i < 3; i++)
+        {
+            data.normals.push_back(inTriangulation.UniqueNumbers[normal.X()]);
+            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Y()]);
+            data.normals.push_back(inTriangulation.UniqueNumbers[normal.Z()]);
+        }
+        progressbar->setValue(count);
+        count++;
+    }
+    return data;
 }
 
 Triangulation Visualizer::readFile(const QString &filePath)
 {
     Triangulation triangulation;
-    if (filePath.endsWith(".stl", Qt::CaseInsensitive)) 
+    if (filePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         STLReader reader;
         reader.read(filePath.toStdString(), triangulation);
-    }else if (filePath.endsWith(".obj", Qt::CaseInsensitive)) 
+        progressbar->setRange(0, triangulation.Triangles.size());
+    }
+    else if (filePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         OBJReader reader;
         reader.read(filePath.toStdString(), triangulation);
+        progressbar->setRange(0, triangulation.Triangles.size());
     }
 
     return triangulation;

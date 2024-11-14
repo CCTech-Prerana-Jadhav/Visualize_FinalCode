@@ -2,6 +2,7 @@
 #include <string> 
 #include "Triangulation.h"
 #include "Reader.h"
+using namespace Geometry;
 
 // STLReader class inherits from Reader to specifically handle STL file reading
 class STLReader : public Reader

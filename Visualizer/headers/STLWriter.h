@@ -4,6 +4,7 @@
 #include "Writer.h"
 #include "Triangle.h"
 #include "Triangulation.h"
+using namespace Geometry;
 
 class STLWriter : public Writer
 {

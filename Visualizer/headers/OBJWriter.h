@@ -4,6 +4,7 @@
 #include "Triangulation.h"
 #include <vector>
 #include <map>
+using namespace Geometry;
 
 class OBJWriter : public Writer
 {
