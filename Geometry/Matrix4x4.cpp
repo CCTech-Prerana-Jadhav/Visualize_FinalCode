@@ -6,13 +6,12 @@ Matrix4x4::Matrix4x4() : matrix({ {1.0,0.0,0.0,0.0} ,{0.0,1.0,0.0,0.0} ,{0.0,0.0
 {
 }
 
-Matrix4x4::~Matrix4x4()
+Geometry::Matrix4x4::Matrix4x4(std::vector<std::vector<double>> matrix) : matrix(matrix)
 {
 }
 
-void Geometry::Matrix4x4::setval(double value, int x, int y)
+Matrix4x4::~Matrix4x4()
 {
-	matrix[x][y] = value;
 }
 
 std::vector<double> Matrix4x4::multiply(double _x, double _y, double _z)

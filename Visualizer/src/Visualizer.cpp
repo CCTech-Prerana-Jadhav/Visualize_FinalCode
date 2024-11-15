@@ -19,9 +19,9 @@ Visualizer::Visualizer(QWidget* parent)
 
 Visualizer::~Visualizer()
 {
-    if (QFile::exists(inputFilePath))
+    if (QFile::exists(inputFileName))
     {
-        QFile::remove(inputFilePath);
+        QFile::remove(inputFileName);
         qDebug() << "File Deleted";
     }
 }
@@ -87,10 +87,10 @@ void Visualizer::onTranslateClick()
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
-        inputFilePath = exportFileName;
+        inputFileName = exportFileName;
         Geometry::Matrix4x4 mat;
         Transformation::Transformation t;
-        outputTriangulation =   t.scaling(triangulation,mat);
+        outputTriangulation =   t.scaling(triangulation,2);
         for (auto i : outputTriangulation.Triangles)
         {
                 qDebug() << i.P1().X() << i.P1().Y() << i.P1().Z() << "|" << i.P2().X() << i.P2().Y() << i.P2().Z() << "|" << i.P3().X() << i.P3().Y() << i.P3().Z();
@@ -100,6 +100,8 @@ void Visualizer::onTranslateClick()
         ObjWriter writer;
         writer.Write(exportFileName.toStdString(), outputTriangulation);
         // reload file to check and load in output renderer
+        outputTriangulation.Triangles.clear();
+        outputTriangulation.UniqueNumbers.clear();
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
 
@@ -111,15 +113,17 @@ void Visualizer::onTranslateClick()
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
-        inputFilePath = exportFileName;
+        inputFileName = exportFileName;
         Geometry::Matrix4x4 mat;
         Transformation::Transformation t;
-        outputTriangulation = t.scaling(triangulation, mat);
+        outputTriangulation = t.scaling(triangulation, 2);
         STLWriter writer;
         writer.Write(exportFileName.toStdString(), outputTriangulation);
 
 
         // reload file to check and load in output renderer
+        outputTriangulation.Triangles.clear();
+        outputTriangulation.UniqueNumbers.clear();
         STLReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
 

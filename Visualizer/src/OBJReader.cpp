@@ -11,6 +11,7 @@
 #include <cassert>
 #include <string>
 #include <map>
+#include <QDebug>
 
 #define TOLERANCE 0.0000001
 OBJReader::OBJReader()
@@ -29,6 +30,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
     std::map<double, int, OBJReader> uniqueMap;
     double xyz[3];
     double normalXYZ[3];
+    int linenumber;
     std::string fLetter;
     std::string str1;
     std::string str2;
@@ -49,6 +51,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
             std::stringstream ss(line);
             QString _line = QString::fromStdString(line);
             QStringList linelist = _line.split(" ");
+            qDebug() << linenumber;
             //std::cout << linelist.value(0).toStdString() << std::endl;
             if (linelist.value(0) == "v")
             {
@@ -121,6 +124,7 @@ void OBJReader::read(const std::string& fileName, Triangulation& triangulation)
                 Point v3 = vertices[thirdVertexId];
                 triangulation.Triangles.push_back(Triangle(normals[normalId], vertices[firstVertexId], vertices[secondVertexId], vertices[thirdVertexId]));
             }
+            linenumber++;
         }
     }
 }

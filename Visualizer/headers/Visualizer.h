@@ -47,5 +47,6 @@ private:
 
     // translation data
     QString inputFilePath;
+    QString inputFileName;
 
 };

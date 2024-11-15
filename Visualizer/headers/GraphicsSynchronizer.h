@@ -1,5 +1,3 @@
-#pragma once
-
 #include <QObject>
 #include <QVector3D>
 #include <QVector2D>

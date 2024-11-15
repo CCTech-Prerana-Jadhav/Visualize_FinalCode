@@ -6,6 +6,7 @@
 #include<vector>
 #include<map>
 #include<unordered_map>
+#include <QDebug>
 
 #define TOLERANCE 0.0000001
 
@@ -29,13 +30,14 @@ void STLReader::read(const std::string& fileName, Triangulation& triangulation)
     //std::map<Point, int> uniqueNormalMap;
     double xyz[3]; // To store 3 coordinates as double
     std::vector<int> pointIndices; // To store indices of unique double values
-
+    int linenumber = 0;
     std::ifstream infile(fileName);
     if (infile.is_open())
     {
         std::string line;
         while (getline(infile, line))
         {
+            qDebug() << linenumber;
             std::stringstream ss(line);
             std::string word;
 
@@ -71,6 +73,7 @@ void STLReader::read(const std::string& fileName, Triangulation& triangulation)
                     triangulation.Triangles.push_back(t);
                     pointIndices.clear();
                 }
+                linenumber++;
             }
         }
     }
