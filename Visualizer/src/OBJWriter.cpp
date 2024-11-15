@@ -4,13 +4,14 @@
 #include <iostream>
 #include "Point.h"
 
-std::vector<Point> uniqueVerticesList;
-std::vector<Point> uniqueNormalsList;
-std::map<Point, int> VerticeMap;
-std::map<Point, int> NormalMap;
-
-void ObjWriter::Write(const std::string& filename, const Triangulation& triangulation)
+void ObjWriter::Write(const std::string& filename,const Triangulation& triangulation)
 {
+
+    std::vector<Point> uniqueVerticesList;
+    std::vector<Point> uniqueNormalsList;
+    std::map<Point, int> VerticeMap;
+    std::map<Point, int> NormalMap;
+
     std::ofstream outfile(filename);
     for (auto triangle : triangulation.Triangles)
     {
@@ -34,7 +35,7 @@ void ObjWriter::Write(const std::string& filename, const Triangulation& triangul
         }
         for each (Triangle tri in triangulation.Triangles)
         {
-            outfile << formulateFace(tri) << std::endl;
+            outfile << formulateFace(tri,VerticeMap,NormalMap) << std::endl;
         }
     }
 }
@@ -68,7 +69,7 @@ std::string ObjWriter::formulateVertexNormal(Triangulation triangulation, Point 
     return "vn " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
 }
 
-std::string ObjWriter::formulateFace(Triangle triangle)
+std::string ObjWriter::formulateFace(Triangle triangle,std::map<Point,int>& VerticeMap, std::map<Point, int>& NormalMap)
 {
     // v vt vn
     std::string new1 = std::to_string(VerticeMap[triangle.P1()] + 1) + "//" + std::to_string(NormalMap[triangle.Normal()] + 1)

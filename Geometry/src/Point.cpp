@@ -1,9 +1,11 @@
-#include "Point.h"
 
+#include "Point.h"
+using namespace Geometry;
 Point::Point(int x, int y, int z)
 	: mX(x), mY(y), mZ(z)
 {
 }
+
 
 Point::~Point()
 {
@@ -33,4 +35,7 @@ bool Point::operator<(const Point& other) const
 		return mY < other.mY;
 	}
 	return mZ < other.mZ;
+}
+bool Point::operator==(const Point& other) const {
+	return mX == other.mX && mY == other.mY && mZ == other.mZ;
 }

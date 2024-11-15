@@ -44,7 +44,6 @@ protected:
 private:
     //void loadSTL(const QString& filePath);
     void updateModelViewMatrix();
-
     QOpenGLShaderProgram shaderProgram;
     QOpenGLBuffer vbo;
     QMatrix4x4 projection;

@@ -6,6 +6,7 @@
 #include "OBJWriter.h"
 #include "STLWriter.h"
 #include "DataWriter.h"
+#include "Transformation.h"
 
 
 Visualizer::Visualizer(QWidget* parent)
@@ -16,6 +17,7 @@ Visualizer::Visualizer(QWidget* parent)
     connect(loadFile, &QPushButton::clicked, this, &Visualizer::onLoadFileClick);
     connect(translate, &QPushButton::clicked, this, &Visualizer::onTranslateClick);
     connect(exportFile, &QPushButton::clicked, this, &Visualizer::onExportClick);
+    
 }
 
 Visualizer::~Visualizer()
@@ -84,10 +86,19 @@ void Visualizer::onTranslateClick()
     if (inputFilePath.endsWith(".stl", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.obj";
+        
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+
+        outputTriangulation = t.Translatate(triangulation, 2,3,2);
+        //outputTriangulation = t.scaling(triangulation, mat);
+
         ObjWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
 
         // reload file to check and load in output renderer
+        outputTriangulation.Triangles.clear();
+        outputTriangulation.UniqueNumbers.clear();
         OBJReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
 
@@ -98,10 +109,16 @@ void Visualizer::onTranslateClick()
     else if (inputFilePath.endsWith(".obj", Qt::CaseInsensitive))
     {
         QString exportFileName = dir + "/output.stl";
+        
+        Geometry::Matrix4x4 mat;
+        Transformation::Transformation t;
+        outputTriangulation = t.scaling(triangulation, 1,2,3);
         STLWriter writer;
-        writer.Write(exportFileName.toStdString(), triangulation);
+        writer.Write(exportFileName.toStdString(), outputTriangulation);
 
         // reload file to check and load in output renderer
+        outputTriangulation.Triangles.clear();
+        outputTriangulation.UniqueNumbers.clear();
         STLReader reader;
         reader.read(exportFileName.toStdString(), outputTriangulation);
 

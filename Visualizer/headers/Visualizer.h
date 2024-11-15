@@ -3,10 +3,12 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-
 #include "Triangulation.h"
 #include "OpenGlWidget.h"
 #include "GraphicsSynchronizer.h"
+#include "Transformation.h"
+
+using namespace Geometry;
 
 class Visualizer : public QMainWindow
 {
@@ -32,7 +34,6 @@ private:
     QPushButton* loadFile;
     QPushButton* translate;
     QPushButton* exportFile;
-
     OpenGlWidget* openglWidgetInput;
     OpenGlWidget* openglWidgetOutput;
 
